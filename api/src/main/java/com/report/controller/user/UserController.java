@@ -48,7 +48,7 @@ public class UserController {
 		if (user == null) {
 			state = 1;
 			msg = "用户不存在。";
-		} else if (!Crypt.validateWordpressPassword(username,user.getUserPass())) {
+		} else if (!Crypt.validateWordpressPassword(password,user.getUserPass())) {
 			state = 2;
 			msg = "密码错误，请重新输入。";
 		} else {
@@ -57,6 +57,7 @@ public class UserController {
 		}
 		result.put("state", state);
 		result.put("msg", msg);
+		result.put("user", user);
 		return result;
 	}
 

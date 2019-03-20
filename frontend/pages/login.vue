@@ -43,6 +43,9 @@
               />
               <label for="rem-pwd">记住密码</label>
             </div>
+            <div class="field mt10 sm-text error-tips">
+              {{ errorMsg }}
+            </div>
             <div
               class="field mt30"
               style="margin-top:21px;"
@@ -86,17 +89,21 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      errorMsg: ''
     }
   },
   methods: {
     async login() {
-      console.log(this)
-      const data = await this.$axios.post(api.user.login, {
+      const { data } = await this.$axios.post(api.user.login, {
         username: this.username,
         password: this.password
       })
-      console.log(data)
+      if (data.state === 0) {
+        this.$router.push('/')
+      } else {
+        this.errorMsg = data.msg
+      }
     }
   }
 }
