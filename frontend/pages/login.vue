@@ -57,6 +57,13 @@
               >
                 登录
               </a-button>
+              <a-button
+                type="primary"
+                block
+                @click="getUserInfo"
+              >
+                获取信息
+              </a-button>
             </div>
             <div
               id="info-box"
@@ -104,6 +111,11 @@ export default {
       } else {
         this.errorMsg = data.msg
       }
+    },
+    async getUserInfo() {
+      debugger
+      const { data } = await this.$axios.post(api.user.info)
+      console.log(data)
     }
   }
 }
