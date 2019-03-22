@@ -1,5 +1,5 @@
 const pkg = require('./package')
-
+const mainThemeColor = '#1DA57A';
 module.exports = {
   mode: 'universal',
 
@@ -24,7 +24,7 @@ module.exports = {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: mainThemeColor },
 
   /*
    ** Global CSS
@@ -78,7 +78,7 @@ module.exports = {
      ** You can extend webpack config here
      */
     extend (config, ctx) {
-      
+
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
