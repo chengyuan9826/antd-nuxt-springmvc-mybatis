@@ -12,7 +12,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: pkg.name,
+    title: '图片分享平台报表系统',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,12 +29,13 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['ant-design-vue/dist/antd.css'],
+  css: ['~/assets/less/antd-theme/index.less'],
+  // css: ['~/assets/less/antd-theme.less','ant-design-vue/dist/antd.less'],
 
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui','~/plugins/axios'],
+  plugins: ['@/plugins/antd-ui', '~/plugins/axios'],
 
   /*
    ** Nuxt.js modules
@@ -63,10 +64,21 @@ module.exports = {
    ** Build configuration
    */
   build: {
+    loaders: {
+      less: {
+        modifyVars: {
+          // 'primary-color': '#41b883',
+          'link-color': '#1DA57A',
+          'border-radius-base': '2px',
+        },
+        javascriptEnabled: true,
+      }
+    },
     /*
      ** You can extend webpack config here
      */
     extend (config, ctx) {
+      
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
@@ -74,7 +86,7 @@ module.exports = {
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }
