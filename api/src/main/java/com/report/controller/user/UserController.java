@@ -36,7 +36,6 @@ public class UserController {
 	Logger log = Logger.getLogger(UserController.class);
 
 	@ResponseBody
-
 	@RequestMapping(value = "/login.do")
 	public Map<String, Object> login(HttpServletRequest request,@RequestBody Map<String,Object> params, HttpSession session) {
 		String username = (String) params.get("username");
@@ -55,6 +54,26 @@ public class UserController {
 			msg = "验证成功！";
 			session.setAttribute("user", user);
 		}
+		result.put("state", state);
+		result.put("msg", msg);
+		result.put("user", user);
+		return result;
+	}
+
+	/**
+	 * 获取session中的userinfo
+	 * @param request
+	 * @param params
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getUserInfo.do")
+	public Map<String, Object> userinfo(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String msg = null;
+		User user = (User) session.getAttribute("user");
+		int state = 0;
 		result.put("state", state);
 		result.put("msg", msg);
 		result.put("user", user);

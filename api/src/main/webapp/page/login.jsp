@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>微商城知识库</title>
+<title>api</title>
 <link rel="stylesheet" type="text/css" href="${basePath }/css/css.css" />
 <script type="text/javascript"
 	src="${basePath }/js/common/jquery-1.11.3.min.js"></script>

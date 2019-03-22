@@ -90,6 +90,7 @@
 
 <script>
 import api from '~/assets/js/common/api'
+import constants from '~/assets/js/common/constants'
 export default {
   layout: 'login',
   components: {},
@@ -107,6 +108,9 @@ export default {
         password: this.password
       })
       if (data.state === 0) {
+        // 登录成功，记录登录信息
+        localStorage.setItem(constants.user.usernameKey,data.user.displayName);
+        this.$store.commit('user/SET_USER',data.user);
         this.$router.push('/')
       } else {
         this.errorMsg = data.msg
