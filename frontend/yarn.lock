@@ -3436,6 +3436,13 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts@^4.2.1:
+  version "4.2.1"
+  resolved "http://registry.npm.taobao.org/echarts/download/echarts-4.2.1.tgz#9a8ea3b03354f86f824d97625c334cf16965ef03"
+  integrity sha1-mo6jsDNU+G+CTZdiXDNM8Wll7wM=
+  dependencies:
+    zrender "4.0.7"
+
 editorconfig@^0.15.2:
   version "0.15.3"
   resolved "http://registry.npm.taobao.org/editorconfig/download/editorconfig-0.15.3.tgz#bef84c4e75fb8dcb0ce5cee8efd51c15999befc5"
@@ -10282,3 +10289,8 @@ yargs@^7.0.0:
     which-module "^1.0.0"
     y18n "^3.2.1"
     yargs-parser "^5.0.0"
+
+zrender@4.0.7:
+  version "4.0.7"
+  resolved "http://registry.npm.taobao.org/zrender/download/zrender-4.0.7.tgz#15ae960822f5efed410995d37e5107fe3de10e6d"
+  integrity sha1-Fa6WCCL17+1BCZXTflEH/j3hDm0=

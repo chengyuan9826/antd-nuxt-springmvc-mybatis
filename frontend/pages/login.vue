@@ -109,17 +109,17 @@ export default {
       })
       if (data.state === 0) {
         // 登录成功，记录登录信息
-        localStorage.setItem(constants.user.usernameKey,data.user.displayName);
-        this.$store.commit('user/SET_USER',data.user);
+        // localStorage.setItem(constants.user.usernameKey, data.user.displayName)
+        this.$store.commit('user/SET_USER', data.user)
         this.$router.push('/')
       } else {
         this.errorMsg = data.msg
       }
     },
     async getUserInfo() {
-      debugger
       const { data } = await this.$axios.post(api.user.info)
       console.log(data)
+      this.errorMsg = data
     }
   }
 }

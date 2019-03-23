@@ -63,7 +63,6 @@ public class UserController {
 	/**
 	 * 获取session中的userinfo
 	 * @param request
-	 * @param params
 	 * @param session
 	 * @return
 	 */

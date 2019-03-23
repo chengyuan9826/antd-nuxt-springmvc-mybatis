@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" v-if="showLayout">
+  <a-layout id="components-layout-demo-custom-trigger" :hasSider="true">
     <a-layout-sider
       v-model="collapsed"
       :trigger="null"
@@ -12,26 +12,18 @@
         mode="inline"
         theme="dark"
         @click="handleClick"
+        @openChange="onOpenChange"
       >
         <a-sub-menu
           key="sub1"
           @titleClick="titleClick"
         >
           <span slot="title">
-            <a-icon type="mail" /><span>Navigation One</span></span>
-          <a-menu-item-group key="g1">
-            <template slot="title">
-              <a-icon type="qq" /><span>Item 1</span></template>
-            <a-menu-item key="1">Option 1</a-menu-item>
-            <a-menu-item key="2">Option 2</a-menu-item>
-          </a-menu-item-group>
-          <a-menu-item-group
-            key="g2"
-            title="Item 2"
-          >
-            <a-menu-item key="3">Option 3</a-menu-item>
-            <a-menu-item key="4">Option 4</a-menu-item>
-          </a-menu-item-group>
+            <a-icon type="bar-chart" /><span>上传统计</span>
+          </span>
+          <a-menu-item key="1">上传总数</a-menu-item>
+          <a-menu-item key="2">精品统计</a-menu-item>
+          <a-menu-item key="3">PSD统计</a-menu-item>
         </a-sub-menu>
         <a-sub-menu
           key="sub2"
@@ -66,6 +58,17 @@
           :type="collapsed ? 'menu-unfold' : 'menu-fold'"
           @click="()=> collapsed = !collapsed"
         />
+        <div
+          class=""
+          style="float:right;margin-right:24px;"
+        >
+          <span class='username'>当前用户：{{$store.state.user.user&&$store.state.user.user.displayName}}</span>
+          <span
+            class="logout"
+            style="margin-left:20px;hover:pointer"
+            @click="logout"
+          >退出</span>
+        </div>
       </a-layout-header>
       <nuxt />
     </a-layout>
@@ -73,35 +76,40 @@
 </template>
 <script>
 import constants from '~/assets/js/common/constants'
+import api from '~/assets/js/common/api'
 export default {
-  layout: 'default',
-  // middware:'auth',
+  middleware: 'auth',
   data() {
     return {
       collapsed: false,
       current: ['mail'],
-      openKeys: ['sub1'],
-      showLayout:false
-    }
-  },
-  beforeMount() {
-    const user = localStorage.getItem(constants.user.usernameKey);
-    if(!user){
-      this.$router.push('/login');
-    }else{
-      this.showLayout = true;
+      showLayout: false,
+      rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
+      openKeys: ['sub1']
     }
   },
   methods: {
+    async logout() {
+      // 系统中退出
+      const data = await this.$axios.post(api.user.logout)
+      // 清理store
+      this.$store.commit('user/DEL_USER')
+      this.$router.push('/login')
+    },
     handleClick(e) {
       console.log('click', e)
     },
     titleClick(e) {
       console.log('titleClick', e)
     },
-    watch: {
-      openKeys(val) {
-        console.log('openKeys', val)
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      )
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     }
   }
@@ -125,7 +133,7 @@ body,
 }
 
 #components-layout-demo-custom-trigger .trigger:hover {
-  color: #1890ff;
+  /* color: #1890ff; */
 }
 
 #components-layout-demo-custom-trigger .logo {
