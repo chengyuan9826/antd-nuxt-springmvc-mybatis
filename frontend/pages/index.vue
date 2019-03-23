@@ -124,6 +124,7 @@ export default {
     }
   },
   mounted() {
+    reportChart = null;
     this.buildCharts()
   },
 
@@ -183,7 +184,7 @@ export default {
           }
         },
         legend: {
-          top:10,
+          top: 10,
           data: [
             '合计',
             (queryParam.fileType && queryParam.fileType.toUpperCase()) || 'PSD',
@@ -242,6 +243,13 @@ export default {
         ]
       }
       reportChart.setOption(option)
+    },
+    watch: {
+      $route: function() {
+        // 路由变化会触发
+        console.log('watch...')
+        reportChart = undefined
+      }
     }
   }
 }
@@ -271,5 +279,4 @@ export default {
 #components-form-demo-advanced-search .ant-form {
   max-width: none;
 }
-
 </style>

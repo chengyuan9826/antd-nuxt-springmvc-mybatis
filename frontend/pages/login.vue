@@ -57,13 +57,6 @@
               >
                 登录
               </a-button>
-              <a-button
-                type="primary"
-                block
-                @click="getUserInfo"
-              >
-                获取信息
-              </a-button>
             </div>
             <div
               id="info-box"
@@ -111,7 +104,7 @@ export default {
         // 登录成功，记录登录信息
         // localStorage.setItem(constants.user.usernameKey, data.user.displayName)
         this.$store.commit('user/SET_USER', data.user)
-        this.$router.push('/report')
+        this.$router.push('/')
       } else {
         this.errorMsg = data.msg
       }

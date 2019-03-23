@@ -6,10 +6,10 @@ export default function ({ app, redirect }) {
   $axios.defaults.timeout = 50000;
   // $axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   $axios.onRequest(config => {
-    env.isDev && console.log('$axios request:', config);
+    env.isDev && console.debug('$axios request:', config);
   });
   $axios.onResponse(response => {
-    env.isDev && console.log('$axios response:', response.data);
+    env.isDev && console.debug('$axios response:', response.data);
   });
 
   $axios.onError(error => {

@@ -52,6 +52,7 @@ public class UserController {
 			msg = "密码错误，请重新输入。";
 		} else {
 			msg = "验证成功！";
+			user.setUserPass(null);
 			session.setAttribute("user", user);
 		}
 		result.put("state", state);
