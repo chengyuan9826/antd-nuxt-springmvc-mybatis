@@ -44,6 +44,8 @@
                 >
                   <a-select-option value="psd">PSD</a-select-option>
                   <a-select-option value="zip">ZIP</a-select-option>
+                  <a-select-option value="ttf">TTF</a-select-option>
+                  <a-select-option value="pdf">PDF</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>

@@ -27,6 +27,7 @@
 		wp_users b
 		WHERE
 		a.post_author = b.id
+        AND a.post_status  = 'publish'
 		<if test="fileType !=null">
 		    AND a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%')
 		</if>
@@ -45,6 +46,7 @@
 		<if test="maxNum !=null">
 			AND count <![CDATA[<]]> #{maxNum}
 		</if>
+
 
 	</select>
 </mapper>
