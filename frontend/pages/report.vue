@@ -183,6 +183,7 @@ export default {
           }
         },
         legend: {
+          top:10,
           data: [
             '合计',
             (queryParam.fileType && queryParam.fileType.toUpperCase()) || 'PSD',
@@ -250,7 +251,7 @@ export default {
   width: 100%;
   height: 580px;
   box-sizing: border-box;
-  margin-top: 24px;
+  margin-top: 10px;
 }
 .ant-advanced-search-form {
   padding: 24px;
@@ -270,13 +271,5 @@ export default {
 #components-form-demo-advanced-search .ant-form {
   max-width: none;
 }
-#components-form-demo-advanced-search .search-result-list {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 6px;
-  background-color: #fafafa;
-  min-height: 200px;
-  text-align: center;
-  padding-top: 80px;
-}
+
 </style>
