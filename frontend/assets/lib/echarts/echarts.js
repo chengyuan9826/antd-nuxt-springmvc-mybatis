@@ -1,7 +1,7 @@
 const echarts = require('echarts/lib/echarts');
 
 const echartsTheme = {
-  color: ['#6453fa', '#00d79a', '#6eb300', '#c2a3ff', '#870000'],
+  color: ['#1890ff', '#6453fa', '#00d79a', '#6eb300', '#c2a3ff', '#870000'],
   backgroundColor: '#fff',
   title: {
     x: 'center',
@@ -18,5 +18,11 @@ const tempInit = echarts.init;
 echarts.init = function (target) {
   return tempInit(target, 'xkwAdminTheme');
 };
+
+require('echarts/lib/chart/line')
+require('echarts/lib/chart/bar')
+require('echarts/lib/component/tooltip')
+require('echarts/lib/component/title')
+require('echarts/lib/component/legend')
 
 export default echarts;

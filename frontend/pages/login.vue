@@ -111,14 +111,13 @@ export default {
         // 登录成功，记录登录信息
         // localStorage.setItem(constants.user.usernameKey, data.user.displayName)
         this.$store.commit('user/SET_USER', data.user)
-        this.$router.push('/')
+        this.$router.push('/report')
       } else {
         this.errorMsg = data.msg
       }
     },
     async getUserInfo() {
       const { data } = await this.$axios.post(api.user.info)
-      console.log(data)
       this.errorMsg = data
     }
   }

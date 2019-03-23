@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" :hasSider="true">
+  <a-layout id="components-layout-demo-custom-trigger" :has-sider="true">
     <a-layout-sider
       v-model="collapsed"
       :trigger="null"

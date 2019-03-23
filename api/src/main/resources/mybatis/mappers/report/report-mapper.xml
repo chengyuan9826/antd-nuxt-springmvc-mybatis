@@ -19,7 +19,7 @@
         b.id user_id,
 		b.display_name username,
 		<if test="fileType !=null">
-			${fileType} file_type,
+			#{fileType} file_type,
 		</if>
 		count( 0 ) count
 		FROM
@@ -28,15 +28,14 @@
 		WHERE
 		a.post_author = b.id
 		<if test="fileType !=null">
-		    AND a.post_content LIKE concat('%<![CDATA[<]]>a%.') ,${fileType},'<![CDATA[>]]>%')
+		    AND a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%')
 		</if>
 		<if test="notLikeUserName !=null">
-			AND b.display_name NOT LIKE '%r%'
+			AND b.display_name NOT LIKE CONCAT('%',#{notLikeUserName},'%')
 		</if>
 		<if test="likeUserName !=null">
-     	    AND b.display_name LIKE '%r%'
+     	    AND b.display_name LIKE CONCAT('%',#{likeUserName},'%')
 		</if>
-		AND a.post_author = b.id
 		GROUP BY
 		b.ID
 		HAVING 1=1
