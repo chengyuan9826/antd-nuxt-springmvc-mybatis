@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.report.dao.report.ReportMapper">
+	<resultMap type="com.report.model.report.Report" id="BaseReportResultMap">
+		<result column="user_id" property="userId" />
+		<result column="username" property="username" />
+		<result column="count" property="count" />
+		<result column="file_type" property="fileType" />
+	</resultMap>
+
+
+	<!-- 查询报表 -->
+	<select id="queryReport" parameterType="java.util.Map"
+		resultMap="BaseReportResultMap">
+		SELECT
+        b.id user_id,
+		b.display_name username,
+		<if test="fileType !=null">
+			${fileType} file_type,
+		</if>
+		count( 0 ) count
+		FROM
+		wp_posts a,
+		wp_users b
+		WHERE
+		a.post_author = b.id
+		<if test="fileType !=null">
+		    AND a.post_content LIKE concat('%<![CDATA[<]]>a%.') ,${fileType},'<![CDATA[>]]>%')
+		</if>
+		<if test="notLikeUserName !=null">
+			AND b.display_name NOT LIKE '%r%'
+		</if>
+		<if test="likeUserName !=null">
+     	    AND b.display_name LIKE '%r%'
+		</if>
+		AND a.post_author = b.id
+		GROUP BY
+		b.ID
+		HAVING 1=1
+		<if test="minNum !=null">
+			AND count <![CDATA[>]]> #{minNum}
+		</if>
+		<if test="maxNum !=null">
+			AND count <![CDATA[<]]> #{maxNum}
+		</if>
+
+	</select>
+</mapper>
