@@ -24,12 +24,18 @@
 		count( 0 ) count
 		FROM
 		wp_posts a,
-		wp_users b
+		wp_users b,
+        wp_term_relationships c,
+        wp_term_taxonomy d,
+        wp_terms e
 		WHERE
 		a.post_author = b.id
         AND a.post_status  = 'publish'
+        AND a.id = c.object_id
+        AND c.term_taxonomy_id = d.term_taxonomy_id
+        AND d.term_id = e.term_id
 		<if test="fileType !=null">
-		    AND a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%')
+		    AND (a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%') AND e.term_id not in (111,112,113))
 		</if>
 		<if test="notLikeUserName !=null">
 			AND b.display_name NOT LIKE CONCAT('%',#{notLikeUserName},'%')
@@ -37,6 +43,18 @@
 		<if test="likeUserName !=null">
      	    AND b.display_name LIKE CONCAT('%',#{likeUserName},'%')
 		</if>
+        <if test="startTime !=null">
+            AND a.post_date >= #{startTime}
+        </if>
+        <if test="endTime !=null">
+            AND a.post_date &lt;= #{endTime}
+        </if>
+        <if test="termId !=null">
+            AND e.term_id = #{termId}
+        </if>
+        <if test="likeUserName !=null">
+            AND b.display_name LIKE CONCAT('%',#{likeUserName},'%')
+        </if>
 		GROUP BY
 		b.ID
 		HAVING 1=1
