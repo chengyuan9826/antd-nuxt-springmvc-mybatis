@@ -48,7 +48,13 @@ module.exports = {
    ** Axios module configuration
    */
   axios: {
-    proxy: true
+    proxy: true,
+    // credentials: true,
+    debug: false,
+    // 非常重要，后端请求的时候会带上cookie
+    proxyHeaders: true,
+    // 忽略掉host，否则错误的host将引起nginx代理转发的失败
+    proxyHeadersIgnore: ['host'],
   },
 
   proxy: {

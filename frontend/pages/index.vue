@@ -73,6 +73,39 @@
                 />
               </a-form-item>
             </a-col>
+
+            <a-col :span="colspanNum*2">
+              <a-form-item
+                label="日期"
+                style="margin-bottom:0;"
+              >
+                <a-form-item :style="{ display: 'inline-block', width: 'calc(50% - 12px)' }">
+                  <a-date-picker
+                    v-decorator="[
+                'startTime'
+              ]"
+                    format="YYYY-MM-DD"
+                    style="width: 100%"
+                    placeholder="选择起始日期"
+                  />
+                </a-form-item>
+                <span :style="{ display: 'inline-block', width: '24px', textAlign: 'center' }">
+                  -
+                </span>
+                <a-form-item :style="{ display: 'inline-block', width: 'calc(50% - 12px)' }">
+                  <a-date-picker
+                    v-decorator="[
+                'endTime',{
+                  format:'YYYY-MM-DD'
+                }
+              ]"
+                    format="YYYY-MM-DD"
+                    style="width: 100%"
+                    placeholder="选择结束日期"
+                  />
+                </a-form-item>
+              </a-form-item>
+            </a-col>
           </a-row>
           <a-row>
             <a-col
@@ -105,6 +138,7 @@
 </template>
 <script>
 import api from '~/assets/js/common/api'
+import constants from '~/assets/js/common/constants'
 import echarts from '~/assets/lib/echarts/echarts'
 import { labelOption } from '~/assets/lib/echarts/label'
 import { Promise } from 'q'
@@ -115,8 +149,7 @@ export default {
   layout: 'default',
   data() {
     return {
-      colNum: 6,
-      count: 8,
+      colNum: 4,
       form: this.$form.createForm(this)
     }
   },
@@ -126,7 +159,7 @@ export default {
     }
   },
   mounted() {
-    reportChart = null;
+    reportChart = null
     this.buildCharts()
   },
 
@@ -147,34 +180,97 @@ export default {
       console.log(`selected ${value}`)
     },
     async buildCharts() {
+      // 创建echarts对象。只在页面第一次进入的时候创建，之后只是修改option
+      reportChart =
+        reportChart || echarts.init(document.getElementById('charts-box'))
+      // 定义查询参数
       let queryParam
       this.form.validateFields((err, values) => {
         err && console.error(err)
         queryParam = values
+        const formater = 'YYYY-MM-DD'
+        queryParam.startTime &&
+          (queryParam.startTime = queryParam.startTime.format(formater))
+        queryParam.endTime &&
+          (queryParam.endTime = queryParam.endTime.format(formater))
       })
-      const tempParam = Object.assign({}, queryParam)
-      tempParam.fileType && delete tempParam.fileType
-      reportChart =
-        reportChart || echarts.init(document.getElementById('charts-box'))
+      // 拷贝查询参数，用来查询总数量，删除类型参数
+      const totalParam = Object.assign({}, queryParam)
+      totalParam.fileType && delete totalParam.fileType
+
+      // 第一次查询 查询总数量
       const dataTotal = this.$axios.post(api.report.query, {
-        ...tempParam
+        ...totalParam
       })
+
+      // 第二次查询 查询指定类型文件数
       const dataFileType = this.$axios.post(api.report.query, {
         ...queryParam
       })
 
+      // 精品的参数，不包含类型参数。可以复用上面的totalParam，但为了之后低耦合，这里创建自己的
+      const classicParam = Object.assign({}, queryParam)
+      classicParam.fileType && delete classicParam.fileType
+      // 第三次查询 查询精品30积分的数量
+      classicParam.termId = constants.report.termId30
+      const classic30 = this.$axios.post(api.report.query, {
+        ...classicParam
+      })
+
+      // 第四次查询 查询精品60积分的数量
+      classicParam.termId = constants.report.termId60
+      const classic60 = this.$axios.post(api.report.query, {
+        ...classicParam
+      })
+
+      // 第5️五次查询 查询精品90积分的数量
+      classicParam.termId = constants.report.termId90
+      const classic90 = this.$axios.post(api.report.query, {
+        ...classicParam
+      })
+
       const usernames = []
-      const totalCounts = []
-      const fileCounts = []
+      // map类型结果
       const fileCountsInfo = {}
-      await Promise.all([dataTotal, dataFileType]).then(res => {
+      const classic30CountsInfo = {}
+      const classic60CountsInfo = {}
+      const classic90CountsInfo = {}
+      // 返回结果1
+      const totalCounts = []
+      // 返回结果2
+      const fileCounts = []
+      // 返回结果3
+      const classic30Counts = []
+      // 返回结果4
+      const classic60Counts = []
+      // 返回结果5
+      const classic90Counts = []
+      await Promise.all([
+        dataTotal,
+        dataFileType,
+        classic30,
+        classic60,
+        classic90
+      ]).then(res => {
         res[1].data.list.forEach(ele => {
           fileCountsInfo[ele.username] = ele.count
+        })
+        res[2].data.list.forEach(ele => {
+          classic30CountsInfo[ele.username] = ele.count
+        })
+        res[3].data.list.forEach(ele => {
+          classic60CountsInfo[ele.username] = ele.count
+        })
+        res[4].data.list.forEach(ele => {
+          classic90CountsInfo[ele.username] = ele.count
         })
         res[0].data.list.forEach(ele => {
           usernames.push(ele.username)
           totalCounts.push(ele.count)
           fileCounts.push(fileCountsInfo[ele.username] || 0)
+          classic30Counts.push(classic30CountsInfo[ele.username] || 0)
+          classic60Counts.push(classic60CountsInfo[ele.username] || 0)
+          classic90Counts.push(classic90CountsInfo[ele.username] || 0)
         })
       })
 
@@ -190,7 +286,9 @@ export default {
           data: [
             '合计',
             (queryParam.fileType && queryParam.fileType.toUpperCase()) || 'PSD',
-            '精品'
+            '精品(30)',
+            '精品(60)',
+            '精品(90)'
           ]
         },
         toolbox: {
@@ -224,6 +322,7 @@ export default {
           {
             name: '合计',
             type: 'bar',
+            barMaxWidth:'30',
             barGap: 0,
             label: labelOption,
             data: totalCounts
@@ -233,14 +332,30 @@ export default {
               (queryParam.fileType && queryParam.fileType.toUpperCase()) ||
               'PSD',
             type: 'bar',
+            barMaxWidth:'30',
             label: labelOption,
             data: fileCounts
           },
           {
-            name: '精品',
+            name: '精品(30)',
             type: 'bar',
+            barMaxWidth:'30',
             label: labelOption,
-            data: fileCounts
+            data: classic30Counts
+          },
+          {
+            name: '精品(60)',
+            type: 'bar',
+            barMaxWidth:'30',
+            label: labelOption,
+            data: classic60Counts
+          },
+          {
+            name: '精品(90)',
+            type: 'bar',
+            barMaxWidth:'30',
+            label: labelOption,
+            data: classic90Counts
           }
         ]
       }
