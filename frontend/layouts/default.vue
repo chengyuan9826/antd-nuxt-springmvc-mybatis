@@ -1,5 +1,8 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" :has-sider="true">
+  <a-layout
+    id="components-layout-demo-custom-trigger"
+    :has-sider="true"
+  >
     <a-layout-sider
       v-model="collapsed"
       :trigger="null"
@@ -25,7 +28,7 @@
           <a-menu-item key="2">精品统计</a-menu-item>
           <a-menu-item key="3">PSD统计</a-menu-item>
         </a-sub-menu>
-        <a-sub-menu
+        <!-- <a-sub-menu
           key="sub2"
           @titleClick="titleClick"
         >
@@ -48,7 +51,7 @@
           <a-menu-item key="10">Option 10</a-menu-item>
           <a-menu-item key="11">Option 11</a-menu-item>
           <a-menu-item key="12">Option 12</a-menu-item>
-        </a-sub-menu>
+        </a-sub-menu> -->
       </a-menu>
     </a-layout-sider>
     <a-layout>

@@ -87,7 +87,41 @@ const labelOption = {
     }
 }
 
+// 之所以用小写是因为echarts中是小写
+const toolbox = {
+    show: true,
+    orient: 'vertical',
+    left: 'right',
+    top: 'center',
+    feature: {
+        mark: { show: true },
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
+    }
+}
+
+const tooltip = {
+    trigger: 'axis',
+    axisPointer: {
+        type: 'shadow'
+    }
+}
+
+/**
+ * 柱状图系列，除了name和data
+ */
+const barSeries = {
+    type: 'bar',
+    barMaxWidth: '30',
+    label: labelOption
+}
+
 export {
     app,
-    labelOption
+    labelOption,
+    toolbox,
+    tooltip,
+    barSeries
 }

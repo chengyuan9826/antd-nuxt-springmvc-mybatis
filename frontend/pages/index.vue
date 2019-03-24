@@ -140,7 +140,7 @@
 import api from '~/assets/js/common/api'
 import constants from '~/assets/js/common/constants'
 import echarts from '~/assets/lib/echarts/echarts'
-import { labelOption } from '~/assets/lib/echarts/label'
+import { labelOption, toolbox, tooltip,barSeries } from '~/assets/lib/echarts/chartsOptions'
 import { Promise } from 'q'
 
 let reportChart
@@ -274,36 +274,20 @@ export default {
         })
       })
 
+      const legendData = [
+        '合计',
+        (queryParam.fileType && queryParam.fileType.toUpperCase()) || 'PSD',
+        '精品(30)',
+        '精品(60)',
+        '精品(90)'
+      ]
       const option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
+        tooltip,
         legend: {
           top: 10,
-          data: [
-            '合计',
-            (queryParam.fileType && queryParam.fileType.toUpperCase()) || 'PSD',
-            '精品(30)',
-            '精品(60)',
-            '精品(90)'
-          ]
+          data: legendData
         },
-        toolbox: {
-          show: true,
-          orient: 'vertical',
-          left: 'right',
-          top: 'center',
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-            restore: { show: true },
-            saveAsImage: { show: true }
-          }
-        },
+        toolbox,
         calculable: true,
         xAxis: [
           {
@@ -320,42 +304,29 @@ export default {
         ],
         series: [
           {
-            name: '合计',
-            type: 'bar',
-            barMaxWidth:'30',
-            barGap: 0,
-            label: labelOption,
-            data: totalCounts
+            name: legendData[0],
+            data: totalCounts,
+            ...barSeries,
           },
           {
-            name:
-              (queryParam.fileType && queryParam.fileType.toUpperCase()) ||
-              'PSD',
-            type: 'bar',
-            barMaxWidth:'30',
-            label: labelOption,
-            data: fileCounts
+            name: legendData[1],
+            data: fileCounts,
+            ...barSeries,
           },
           {
-            name: '精品(30)',
-            type: 'bar',
-            barMaxWidth:'30',
-            label: labelOption,
-            data: classic30Counts
+            name: legendData[2],
+            data: classic30Counts,
+            ...barSeries,
           },
           {
-            name: '精品(60)',
-            type: 'bar',
-            barMaxWidth:'30',
-            label: labelOption,
-            data: classic60Counts
+            name: legendData[3],
+            data: classic60Counts,
+            ...barSeries,
           },
           {
-            name: '精品(90)',
-            type: 'bar',
-            barMaxWidth:'30',
-            label: labelOption,
-            data: classic90Counts
+            name: [4],
+            data: classic90Counts,
+            ...barSeries,
           }
         ]
       }
