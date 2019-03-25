@@ -3,9 +3,9 @@ const CONST = {
         usernameKey: 'username'
     },
     report: {
-        termId30: 1,
-        termId60: 3,
-        termId90: 25,
+        termId30: 31,
+        termId60: 30,
+        termId90: 32,
     }
 }
 export default CONST;

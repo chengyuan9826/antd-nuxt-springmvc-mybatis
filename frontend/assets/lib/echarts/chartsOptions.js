@@ -115,6 +115,7 @@ const tooltip = {
 const barSeries = {
     type: 'bar',
     barMaxWidth: '30',
+    barGap: 0,
     label: labelOption
 }
 

@@ -35,7 +35,7 @@
         AND c.term_taxonomy_id = d.term_taxonomy_id
         AND d.term_id = e.term_id
 		<if test="fileType !=null">
-		    AND (a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%') AND e.term_id not in (111,112,113))
+		    AND (a.post_content LIKE concat('%&lt;a%.',#{fileType},'">%') AND e.term_id not in (31,30,32))
 		</if>
 		<if test="notLikeUserName !=null">
 			AND b.display_name NOT LIKE CONCAT('%',#{notLikeUserName},'%')
