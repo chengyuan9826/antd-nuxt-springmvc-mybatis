@@ -324,7 +324,7 @@ export default {
             ...barSeries,
           },
           {
-            name: [4],
+            name: legendData[4],
             data: classic90Counts,
             ...barSeries,
           }

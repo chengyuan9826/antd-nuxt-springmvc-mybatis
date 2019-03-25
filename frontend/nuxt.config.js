@@ -49,7 +49,7 @@ module.exports = {
    */
   axios: {
     proxy: true,
-    // credentials: true,
+    credentials: true,
     debug: false,
     // 非常重要，后端请求的时候会带上cookie
     proxyHeaders: true,
@@ -58,10 +58,10 @@ module.exports = {
   },
 
   proxy: {
-    '/api': {
-      target: 'http://127.0.0.1:8080',
+    '/api/': {
+      target: 'http://127.0.0.1:8080/api/',
       pathRewrite: {
-        '^/api': '/'
+        '^/api': ''
       }
     }
   },
