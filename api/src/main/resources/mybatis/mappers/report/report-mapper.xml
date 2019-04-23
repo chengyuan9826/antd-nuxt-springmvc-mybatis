@@ -80,4 +80,23 @@
         HAVING
         1 = 1
     </select>
+
+    <!--插入一篇文章-->
+    <insert id="insertPost" parameterType="com.report.model.wp.Post" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wp_posts ( post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, post_name, post_modified, post_modified_gmt, post_parent, to_ping, pinged, post_content_filtered,post_type,post_mime_type )
+        VALUES
+        (#{post_author},#{post_date},#{post_date_gmt},#{post_content},#{post_title},#{post_excerpt},#{post_status},#{post_name},#{post_modified},#{post_modified_gmt},#{post_parent},#{to_ping},#{pinged},#{post_content_filtered},#{post_type},#{post_mime_type});
+    </insert>
+    <!--插入termrelations-->
+    <insert id="insertTermRelations" parameterType="java.util.Map">
+        INSERT INTO wp_term_relationships ( object_id, term_taxonomy_id, term_order )
+        VALUES
+	    (#{post_id}, #{term_id}, 0);
+    </insert>
+    <!--插入metadata-->
+    <insert id="insertPostMeta" parameterType="com.report.model.wp.PostMeta">
+        INSERT INTO wp_postmeta (  post_id, meta_key, meta_value )
+        VALUES
+	    (#{post_id},#{meta_key},#{meta_value})
+    </insert>
 </mapper>
