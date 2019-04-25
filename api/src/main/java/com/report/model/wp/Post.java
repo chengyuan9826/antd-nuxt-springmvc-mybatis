@@ -77,9 +77,15 @@ public class Post {
         return post_content;
     }
 
-    public void setPost_content(String url,String imgSrc) {
-        String contentTemplate = "<a href=\"%s\"><img class=\"alignnone size-full\" src=\"%s\" alt=\"\" /></a>";
-        this.post_content = String.format(contentTemplate,url,imgSrc);
+    public void setPost_content(String url, String imgSrc) {
+        String contentTemplate = "<img class=\"alignnone size-full\" src=\"%s\" alt=\"\" />";
+        if (url != null) {
+            contentTemplate = "<a href=\"%s\">" + contentTemplate + "</a>";
+            this.post_content = String.format(contentTemplate, url, imgSrc);
+        }else{
+            this.post_content = String.format(contentTemplate, imgSrc);
+        }
+
     }
 
     public String getPost_title() {

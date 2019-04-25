@@ -82,7 +82,7 @@ public class FileUtil {
 
         @Override
         public boolean accept(File dir, String name) {
-            return name.indexOf("DS_Store") == -1 && name.indexOf("已生成") == -1;
+            return name.indexOf("DS_Store") == -1 && name.indexOf("已生成") == -1 && name.indexOf(".") != 0;
         }
 
     }

@@ -140,7 +140,10 @@ public class ReportController {
                     }
                     log.debug("文件:" + userDocument.getPath());
                 }
-
+                //有的人只上传了一个图片，没有源文件，需要单独处理，这里把documentUrl设置为null
+                if(userDocumentFolderFiles.length == 1){
+                    documentUrl = null;
+                }
                 //插入文章
                 Post post = getPost(documentUrl, imgUrl, time, timeGmt, userId, title);
                 reportMapper.insertPost(post);

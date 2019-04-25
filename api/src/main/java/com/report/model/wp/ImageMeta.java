@@ -5,7 +5,7 @@ public class ImageMeta {
     private int height;
     private String yearMonthName;
     private String fileName;
-    private String mimeType;
+    private String mimeType = "";
 
     public int getWidth() {
         return width;
