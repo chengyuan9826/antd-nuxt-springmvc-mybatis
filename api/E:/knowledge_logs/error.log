@@ -1,2 +1,0 @@
-2019-04-21 14:24:37  [ com.report.common.util.ImageUtil.generateImgThumbs(ImageUtil.java:79):com.report.controller.user.UserController:main:0 ] - [ ERROR ]  图片不存在：/Users/zks/servers/wp/wp-content/uploads/2019/开源协议.jpg
-2019-04-21 15:08:52  [ com.report.common.util.FileUtil.fileCopy(FileUtil.java:30):com.report.common.util.FileUtil:main:0 ] - [ ERROR ]  文件拷贝失败

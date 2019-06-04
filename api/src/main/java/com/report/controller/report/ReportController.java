@@ -40,7 +40,7 @@ public class ReportController {
     @Autowired
     private ReportMapper reportMapper;
 
-    Logger log = Logger.getLogger(UserController.class);
+    Logger log = Logger.getLogger(ReportController.class);
 
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
