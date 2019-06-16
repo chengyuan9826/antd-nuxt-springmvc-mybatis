@@ -27,6 +27,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -237,7 +238,7 @@ public class ReportController {
     @ResponseBody
     @Transactional
     @RequestMapping(value = "/batchInsertImages.do")
-    public Map<String, Object> batchInsertImages(HttpServletRequest request, String folderName, String slug, HttpSession session) {
+    public Map<String, Object> batchInsertImages(HttpServletRequest request, String folderName, String slug, HttpSession session) throws UnsupportedEncodingException {
         //返回的信息
         Map<String, Object> result = new HashMap<String, Object>();
         if (folderName == null) {
@@ -426,9 +427,9 @@ public class ReportController {
      * @param slug
      * @return
      */
-    private int queryTermIdBySlug(String slug) {
+    private int queryTermIdBySlug(String slug) throws UnsupportedEncodingException {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("slug", URLEncoder.encode(slug).toLowerCase());
+        map.put("slug", URLEncoder.encode(slug,"UTF-8").toLowerCase());
         List<Map<String, Object>> result = reportMapper.queryTermInfo(map);
         int termTaxonomyId = 0;
         if (result.size() > 0) {
