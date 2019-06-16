@@ -1,23 +1,47 @@
 package com.report.model.wp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 /**
  * wordpress文章
  */
 public class Post {
     private int id;
     private int post_author;
-    private String post_date;
-    private String post_date_gmt;
+    private Date post_date;
+    private String display_name;
+    private Date post_date_gmt;
     private String post_content;
     private String post_title;
     private String post_excerpt;
     private String post_status;
     private String post_mime_type;
     private String post_name;
-    private String post_modified;
-    private String post_modified_gmt;
+    private Date post_modified;
+    private Date post_modified_gmt;
     private int post_parent;
     private String to_ping;
+    private String tag;
+
+
+    public String getDisplay_name() {
+        return display_name;
+    }
+
+    public void setDisplay_name(String display_name) {
+        this.display_name = display_name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     public String getPost_mime_type() {
         return post_mime_type;
@@ -56,20 +80,21 @@ public class Post {
         this.id = id;
     }
 
-
-    public String getPost_date() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getPost_date() {
         return post_date;
     }
 
-    public void setPost_date(String post_date) {
+    public void setPost_date(Date post_date) {
         this.post_date = post_date;
     }
 
-    public String getPost_date_gmt() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getPost_date_gmt() {
         return post_date_gmt;
     }
 
-    public void setPost_date_gmt(String post_date_gmt) {
+    public void setPost_date_gmt(Date post_date_gmt) {
         this.post_date_gmt = post_date_gmt;
     }
 
@@ -85,6 +110,11 @@ public class Post {
         }else{
             this.post_content = String.format(contentTemplate, imgSrc);
         }
+
+    }
+
+    public void setPost_content(String content) {
+        this.post_content = content;
 
     }
 
@@ -120,19 +150,21 @@ public class Post {
         this.post_name = post_name;
     }
 
-    public String getPost_modified() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getPost_modified() {
         return post_modified;
     }
 
-    public void setPost_modified(String post_modified) {
+    public void setPost_modified(Date post_modified) {
         this.post_modified = post_modified;
     }
 
-    public String getPost_modified_gmt() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    public Date getPost_modified_gmt() {
         return post_modified_gmt;
     }
 
-    public void setPost_modified_gmt(String post_modified_gmt) {
+    public void setPost_modified_gmt(Date post_modified_gmt) {
         this.post_modified_gmt = post_modified_gmt;
     }
 

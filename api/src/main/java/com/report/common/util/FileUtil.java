@@ -66,9 +66,17 @@ public class FileUtil {
             count++;
         }
         try {
+            File distFolder = new File(file2.getParent());
+            if(!distFolder.exists()){
+                distFolder.mkdir();
+                distFolder.setReadable(true, false);
+                distFolder.setWritable(true, false);
+                Runtime.getRuntime().exec("chmod -R 777 " + distFolder.getPath());
+            }
             Files.copy(file1.toPath(), file2.toPath());
             file2.setReadable(true, false);
             file2.setWritable(true, false);
+            file2.setExecutable(true, false);
             log.debug("文件拷贝成功");
         } catch (IOException e) {
             log.error("文件拷贝失败");
