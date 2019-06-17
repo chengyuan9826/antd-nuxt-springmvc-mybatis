@@ -7,6 +7,8 @@ const api = {
     },
     report: {
         query: `/${prefix}/report/queryReport.do`
-    }
+    },
+    publish:`/${prefix}/report/batchPublish.do`,
+    upload:`/${prefix}/report/batchInsert.do`
 }
 export default api;
