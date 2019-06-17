@@ -3,6 +3,7 @@ package com.report.common.util;
 import com.marcospassos.phpserializer.Serializer;
 import com.marcospassos.phpserializer.SerializerBuilder;
 import com.report.controller.user.UserController;
+import com.report.exceptions.ImageErrorException;
 import com.report.model.wp.ImageMeta;
 import org.apache.log4j.Logger;
 import com.report.common.constants.Constants;
@@ -132,7 +133,13 @@ public class ImageUtil {
     }
 
 
-    public static void generateImgThumbs(String imagePath) throws IOException {
+    /**
+     * 生成不同尺寸的缩略图
+     *
+     * @param imagePath
+     * @throws IOException
+     */
+    public static void generateImgThumbs(String imagePath) throws Exception {
         int[] widthArrays = {1870, 1024, 800, 768, 400, 300, 150};
         File imgFile = new File(imagePath);
         if (!imgFile.exists()) {
@@ -141,6 +148,10 @@ public class ImageUtil {
         }
         Image img = null;
         img = ImageIO.read(imgFile);
+        if (img == null) {
+            //图片已损坏或者不是图片类型的文件
+            throw new ImageErrorException("图片已损坏：" + imgFile.getName());
+        }
         // 根据原图与要求的缩略图比例，找到最合适的缩略图比例
         int width = img.getWidth(null);
         //首先把原图片拷贝过去

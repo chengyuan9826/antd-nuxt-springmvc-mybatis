@@ -76,7 +76,7 @@ export default {
       const data = await this.$axios.post(api.user.logout)
       // 清理store
       this.$store.commit('user/DEL_USER')
-      this.$router.push('/login')
+      window.location.href="/login"
     },
     handleClick(e) {
       // switch (e.key) {
