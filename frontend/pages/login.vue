@@ -1,10 +1,7 @@
 <template>
   <div class="login-wrap clearfix">
     <div class="login-center-box">
-      <img
-        src="~/assets/img/login-bg.png"
-        alt=""
-      />
+      <img src="~/assets/img/login-bg.png" alt=""/>
       <div class="right-box">
         <h3 class="title">
           设计中心AI平台报表系统

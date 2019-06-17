@@ -59,7 +59,7 @@ module.exports = {
 
   proxy: {
     '/api/': {
-      target: 'http://127.0.0.1:8080',
+      target: 'http://10.1.14.45:8080',
       pathRewrite: {
         '^/api': ''
       }
@@ -80,6 +80,16 @@ module.exports = {
         javascriptEnabled: true,
       }
     },
+    // loaders: [
+    //   {
+    //     test:/\.(png|jpe?g|gif|svg)$/,
+    //     loader:"url-loader",
+    //     query:{
+    //       limit:10000,
+    //       name:'img/[name].[hash].[ext]'
+    //     }
+    //   }
+    // ],
     /*
      ** You can extend webpack config here
      */

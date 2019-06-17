@@ -332,14 +332,14 @@ export default {
       }
       reportChart.setOption(option)
     },
-    watch: {
+  },
+  watch: {
       $route: function() {
         // 路由变化会触发
         console.log('watch...')
         reportChart = undefined
       }
     }
-  }
 }
 </script>
 <style>
