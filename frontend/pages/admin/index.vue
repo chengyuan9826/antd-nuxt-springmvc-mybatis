@@ -146,7 +146,7 @@ import { Promise } from 'q'
 let reportChart
 
 export default {
-  layout: 'default',
+  layout: 'admin-layout',
   data() {
     return {
       colNum: 4,
@@ -158,6 +158,13 @@ export default {
       return 24 / this.colNum
     }
   },
+  watch: {
+      $route: function() {
+        // 路由变化会触发
+        console.log('watch...')
+        reportChart = undefined
+      }
+    },
   mounted() {
     reportChart = null
     this.buildCharts()
@@ -332,14 +339,7 @@ export default {
       }
       reportChart.setOption(option)
     },
-  },
-  watch: {
-      $route: function() {
-        // 路由变化会触发
-        console.log('watch...')
-        reportChart = undefined
-      }
-    }
+  }
 }
 </script>
 <style>

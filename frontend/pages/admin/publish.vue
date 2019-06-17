@@ -21,24 +21,26 @@
 import api from '~/assets/js/common/api'
 import { message } from 'ant-design-vue'
 export default {
+  layout: 'admin-layout',
   data() {
     return {
       userName: '',
-      unClick:false
+      unClick: false
     }
   },
-   layout: 'default',
   methods: {
     async goPublish() {
-      let _=this
+      let _ = this
       message.loading('正在发布', 0)
-      _.unClick=true
-      let result=await _.$axios.get(`${api.publish}?username=${this.userName}`)
-      if(result.data.state===0){
+      _.unClick = true
+      let result = await _.$axios.get(
+        `${api.publish}?username=${this.userName}`
+      )
+      if (result.data.state === 0) {
         message.destroy()
-        _.unClick=false
+        _.unClick = false
         message.success('发布成功', 3)
-        _.userName=''
+        _.userName = ''
       }
     }
   }
@@ -55,16 +57,16 @@ export default {
   width: 800px;
   padding: 24px;
 }
-.folder-form  .ant-form-item {
-    display: flex;
-  }
- .folder-form .ant-form-item-control-wrapper {
-    flex: 1;
-  }
-.folder-form  .btn-area {
-    padding-top: 4px;
-    text-align: center;
-  }
+.folder-form .ant-form-item {
+  display: flex;
+}
+.folder-form .ant-form-item-control-wrapper {
+  flex: 1;
+}
+.folder-form .btn-area {
+  padding-top: 4px;
+  text-align: center;
+}
 </style>
 
 

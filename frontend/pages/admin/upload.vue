@@ -20,32 +20,31 @@
 <script>
 import api from '~/assets/js/common/api'
 import { message } from 'ant-design-vue'
-export default {
-  data() {
-    return {
-      folderName: '',
-      unClick: false
-    }
+export default { 
+    layout: 'admin-layout',
+    data(){
+        return{
+            folderName:'',
+            unClick:false
+        }
+    },
+    fetch({ store }) {
+      return store.commit('changeSelectedKey', '4')
+    },
+    methods:{
+        async upload(){
+            let _=this
+            message.loading('正在上传', 0)
+            _.unClick=true
+            let {data}=await _.$axios.get(`${api.upload}?folderName=${this.folderName}`)
+            if(data.state===0){
+                _.unClick=false
+                message.destroy()
+                message.success('上传成功', 3)
+                _.folderName=''
+            }
+        }
   },
-  fetch({ store }) {
-    return store.commit('changeSelectedKey', '4')
-  },
-  methods: {
-    async upload() {
-      let _ = this
-      message.loading('正在上传', 0)
-      _.unClick = true
-      let { data } = await _.$axios.get(
-        `${api.upload}?folderName=${this.folderName}`
-      )
-      if (data.state === 0) {
-        _.unClick = false
-        message.destroy()
-        message.success('上传成功', 3)
-        _.folderName = ''
-      }
-    }
-  }
 }
 </script>
 <style>
