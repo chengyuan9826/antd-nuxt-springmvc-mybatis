@@ -14,10 +14,12 @@
     <resultMap type="com.report.model.wp.Post" id="PostMap">
         <result column="id" property="id"/>
         <result column="post_author" property="post_author"/>
+        <result column="post_content" property="post_content"/>
         <result column="post_date" property="post_date"/>
         <result column="post_title" property="post_title"/>
         <result column="post_modified" property="post_modified"/>
         <result column="display_name" property="display_name"/>
+        <result column="thumb_url" property="thumb_url"/>
         <result column="tag" property="tag"/>
     </resultMap>
 
@@ -117,29 +119,33 @@
 
     <!--查询列表-->
     <select id="queryPostList" parameterType="java.util.Map" resultMap="PostMap">
-        SELECT a.id,a.post_author,a.post_date,a.post_title,a.post_modified,u.display_name, GROUP_CONCAT(d.`name`) tag
-        from wp_posts a,wp_term_relationships b,wp_term_taxonomy c, wp_terms d, wp_users u
+        SELECT a.id,a.post_author,a.post_date,a.post_content,a.post_title,a.post_modified,u.display_name,m2.meta_value thumb_url, GROUP_CONCAT(d.`name`) tag
+        from wp_posts a,wp_term_relationships b,wp_term_taxonomy c, wp_terms d, wp_users u,wp_postmeta m1,wp_postmeta m2
         where a.id = b.object_id
         and a.post_author = u.id
         and b.term_taxonomy_id = c.term_taxonomy_id
         and c.term_id = d.term_id
         and a.post_status = 'publish'
-        <if test="keyWord != null">
-            and
-            (d.`name` like concat('%',#{keyWord},'%') -- 标签查询
-            or a.post_title like concat('%',#{keyWord},'%') -- 标题查询
-            )
-        </if>
-        <if test="postAuthor != null">
-            and a.post_author = #{postAuthor} -- 作者ID精确查询
-        </if>
-        <if test="termId != null">
-            and d.term_id = #{termId} -- 标签ID精确查询
-        </if>
-        GROUP BY a.id
+        and a.id = m1.post_id
+        and m1.meta_key='_thumbnail_id'
+        and m1.meta_value = m2.post_id
+        and m2.meta_key='_wp_attached_file'
+         <if test="keyWord != null">
+         and
+          (d.`name` like concat('%',#{keyWord},'%') -- 标签查询
+           or a.post_title like concat('%',#{keyWord},'%') -- 标题查询
+           )
+         </if>
+         <if test="postAuthor != null">
+              and a.post_author = #{postAuthor} -- 作者ID精确查询
+         </if>
+         <if test="termId != null">
+              and d.term_id = #{termId} -- 标签ID精确查询
+          </if>
+        GROUP BY a.id ,m2.meta_value
         order by a.post_date desc
-        limit #{limit}
-        offset #{offset}
+           limit #{limit}
+          offset #{offset}
     </select>
 
     <!--查询文章详情-->
@@ -163,5 +169,10 @@
         <if test="termId!=null">
             and b.term_id=#{termId}
         </if>
+    </select>
+
+    <!--从options表中查询数据-->
+    <select id="queryOption" parameterType="java.lang.String" resultType="java.lang.String">
+        select option_value from wp_options a where a.option_name = #{0}
     </select>
 </mapper>

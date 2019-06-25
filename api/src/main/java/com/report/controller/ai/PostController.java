@@ -1,5 +1,7 @@
 package com.report.controller.ai;
 
+import com.report.common.datasource.DynamicDataSource;
+import com.report.common.util.Cache;
 import com.report.controller.report.ReportController;
 import com.report.dao.report.ReportMapper;
 import com.report.model.wp.Post;
@@ -65,6 +67,20 @@ public class PostController {
         //操作数据库
         try {
             list = reportMapper.queryPostList(param);
+            //查询baseurl
+            String siteUrl = (String)Cache.get("siteUrl");
+            if(siteUrl == null){
+                siteUrl = reportMapper.queryOption("siteurl");
+                Cache.set("siteUrl",siteUrl);
+            }
+
+            String imgUrl;
+            //处理list，给imgUrl添加上前缀
+            for (int i = 0; i < list.size(); i++) {
+                imgUrl = list.get(i).getThumb_url();
+                imgUrl = siteUrl+"/wp-content/uploads/"+imgUrl;
+                list.get(i).setThumb_url(imgUrl);
+            }
         } catch (Exception e) {
             state = -1;
             msg = e.getMessage();

@@ -24,8 +24,16 @@ public class Post {
     private Date post_modified_gmt;
     private int post_parent;
     private String to_ping;
+    private String thumb_url;
     private String tag;
 
+    public String getThumb_url() {
+        return thumb_url;
+    }
+
+    public void setThumb_url(String thumb_url) {
+        this.thumb_url = thumb_url;
+    }
 
     public String getDisplay_name() {
         return display_name;

@@ -72,4 +72,11 @@ public interface ReportMapper {
      */
     Post queryPostDetail(Map<String,Object> param);
 
+    /**
+     * 从options表中查询数据
+     * @param optionKey
+     * @return
+     */
+    String queryOption(String optionKey);
+
 }
