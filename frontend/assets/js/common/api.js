@@ -9,6 +9,8 @@ const api = {
         query: `/${prefix}/report/queryReport.do`
     },
     publish:`/${prefix}/report/batchPublish.do`,
-    upload:`/${prefix}/report/batchInsert.do`
+    upload:`/${prefix}/report/batchInsert.do`,
+    waterfall:`/${prefix}/post/list.do`,
+    category:`/${prefix}/api/category/list.do`
 }
 export default api;

@@ -1,0 +1,8 @@
+@charset "UTF-8";
+@mixin transform($attr){
+  -webkit-transform: $attr;
+  -moz-transform: $attr;
+  -ms-transform: $attr;
+  -o-transform:$attr;
+  transform: $attr;
+}

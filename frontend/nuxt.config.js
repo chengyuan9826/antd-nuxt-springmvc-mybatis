@@ -35,7 +35,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui', '~/plugins/axios'],
+  plugins: ['@/plugins/antd-ui', '~/plugins/axios',{ src: '~/plugins/vue-masonry', ssr: false }],
 
   /*
    ** Nuxt.js modules
@@ -59,7 +59,7 @@ module.exports = {
 
   proxy: {
     '/api/': {
-      target: 'http://10.1.14.45:8080',
+      target: 'http://10.1.14.81:8080',
       pathRewrite: {
         '^/api': ''
       }
