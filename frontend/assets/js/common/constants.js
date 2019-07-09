@@ -1,6 +1,7 @@
 const CONST = {
     user: {
-        usernameKey: 'username'
+        usernameKey: 'username',
+        useridKey:'userid'
     },
     report: {
         termId30: 31,

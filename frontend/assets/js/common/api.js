@@ -11,6 +11,7 @@ const api = {
     publish:`/${prefix}/report/batchPublish.do`,
     upload:`/${prefix}/report/batchInsert.do`,
     waterfall:`/${prefix}/post/list.do`,
-    category:`/${prefix}/api/category/list.do`
+    category:`/${prefix}/api/category/list.do`,
+    detail:`/${prefix}/post/detail.do`
 }
 export default api;

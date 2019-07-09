@@ -1,7 +1,7 @@
 <template>
     <ul class="nav-menu">
         <li v-for="level in levelData" :key="level.termId">
-            <a class="nav-name">{{level.name}}</a>
+            <a :href="'/?termId='+ level.termId" :class="{active:level.termId===termId}" class="nav-name">{{level.name}}</a>
             <level-menu  v-if="level.children" :level-data="level.children"></level-menu>
         </li>
     </ul>
@@ -9,36 +9,46 @@
 <script>
 export default {
   name: 'LevelMenu',
-  props: { levelData: Array }
+  props: { levelData: Array },
+  data() {
+    return {
+      termId: null
+    }
+  },
+  watch: {
+    $route() {
+      this.termId = this.$route.query.termId
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/scss/mixin';
 .nav-menu {
-  font-size: 14px;
   > li {
-    > .nav-name {
+    float: left;
+    width: 33.33%;
+    text-align: left;
+    .nav-name {
       display: block;
       height: 40px;
       line-height: 40px;
-      font-size: 16px;
-      color: #9aa4af;
+      font-size: 14px;
+      color: #333;
       font-weight: 400;
-      &:hover {
-        color: #333;
+      cursor: pointer;
+      &:hover ,&.active{
+        color: #4499ff;
       }
     }
-    .nav-menu {
+    > .nav-menu {
       @include clearfix;
       li {
-        padding-left: 20px;
-        float: left;
+        float: none;
+        width: 100%;
         .nav-name {
-          height: 24px;
-          line-height: 24px;
-          font-size: 14px;
-          color: #666;
+          width: 100%;
         }
       }
     }

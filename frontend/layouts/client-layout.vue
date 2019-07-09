@@ -1,25 +1,29 @@
 <template>
-  <div>
-      <header class="header">
+  <div class="page">
+      <header class="header" :class="{black:isBlackBg}">
           <div class="header-logo"></div>
-          <div class="header-login">
+          <div  v-if="userName" class="user-name">
+            <a :href="'/?author='+ userId">{{userName}}</a>
+            <span @click="loginOut">退出</span>
+          </div>
+          <div v-else class="header-login">
               <nuxt-link to="/login">登录</nuxt-link>/<nuxt-link to="/login">注册</nuxt-link>
           </div>
+
           <ul class="header-nav">
             <template v-for="(item,index) in categoryList">
               <!-- 为了让最后一个item不显示 -->
               <li v-if="index!==categoryListLength-1"  :key="item.termId"  @mouseenter="hoverShowMenu(index)" @mouseleave="hoverShowMenu(-1)">
-                  <a href="" class="nav-name">{{item.name}}<i class="iconfont iconxialajiantou"></i></a>
+                  <a :href="'/?termId='+item.termId" class="nav-name">{{item.name}}<i class="iconfont iconxialajiantou"></i></a>
                   <transition name="move">
                     <div v-show="isShowMenu===index" class="nav-panel">
                       <level-menu :level-data="item.children"></level-menu>
-                    </div>    
+                    </div>
                   </transition>
               </li>
             </template>
           </ul>
       </header>
-      <div class="header-mask"></div>
         <div class="slide">
            <div class="swiper-container">
               <div class="swiper-wrapper">
@@ -35,21 +39,21 @@
             </div>
             <div class="search">
                 <div class="search-box">
-                    <input type="text" placeholder="搜索你喜欢的">
-                    <button class="btn">
-                        <i class="iconfont iconsousuo"></i>
+                    <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @keyup.enter="search()">
+                    <button class="btn" @click="search()">
+                      <i class="iconfont iconsousuo"></i>
                     </button>
                 </div>
                 <ul class="search-menu">
                     <li><a href="">热门搜索：</a></li>
-                    <li><a href="">专题回顾</a></li>
-                    <li><a href="">端午</a></li>
-                    <li><a href="">星空</a></li>
-                    <li><a href="">海报</a></li>
-                    <li><a href="">背景</a></li>
-                    <li><a href="">科技</a></li>
-                    <li><a href="">卡通</a></li>
-                    <li><a href="">节日</a></li>
+                    <li><a href="/?keyWord=专题回顾">专题回顾</a></li>
+                    <li><a href="/?keyWord=端午">端午</a></li>
+                    <li><a href="/?keyWord=星空">星空</a></li>
+                    <li><a href="/?keyWord=海报">海报</a></li>
+                    <li><a href="/?keyWord=背景">背景</a></li>
+                    <li><a href="/?keyWord=科技">科技</a></li>
+                    <li><a href="/?keyWord=卡通">卡通</a></li>
+                    <li><a href="/?keyWord=节日">节日</a></li>
                 </ul>
             </div>
         </div>
@@ -61,6 +65,7 @@ import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.css'
 import api from '~/assets/js/common/api'
 import levelMenu from '~/components/LevelMenu'
+import constants from '~/assets/js/common/constants'
 export default {
   components:{
      levelMenu
@@ -70,10 +75,15 @@ export default {
       isShowMenu: -1,
       currentSlideIndex: 1,// 轮播 当前index
       slideLength: 2,
-      categoryList: [],
-      categoryListLength:0
+      categoryList: [],// 分类信息
+      categoryListLength:0,
+      searchWord:'',// 检索关键字
+      userName:'',// 用户名
+      userId:0,// 用户id
+      isBlackBg:false
     }
   },
+
   mounted() {
     // eslint-disable-next-line
     //轮播
@@ -81,11 +91,33 @@ export default {
     
     // 获取分类信息
     this.getCategoryData()
+
+    // 获取用户信息
+   this.getUserInfo()
+
+   // 滚到一定位置，header bg变色
+  // this.scrollChangeHeaderBg()
+
   },
   methods: {
+    getUserInfo(){
+       this.userName=localStorage.getItem(constants.user.usernameKey)
+       this.userId=localStorage.getItem(constants.user.useridKey)
+    },
+
+    loginOut(){
+       localStorage.setItem(constants.user.usernameKey,'')
+       this.userName=''
+    },
+
     // 下拉菜单显示
     hoverShowMenu(index) {
       this.isShowMenu = index
+    },
+
+    // 搜索
+    search(){
+       this.$router.push({name:"index",query:{keyWord:this.searchWord}});
     },
 
     // 获取分类信息
@@ -114,13 +146,30 @@ export default {
         // nextButton: '.swiper-button-next',
         // prevButton: '.swiper-button-prev'
       })
-    }
+    },
+
+    // 页面滚动，header背景变色
+    // scrollChangeHeaderBg(){
+    //   let _=this;
+    //   window.onscroll=function(){
+    //       let scrollTop = document.documentElement.scrollTop;
+    //       if(scrollTop >600){
+    //         _.isBlackBg=true
+    //       }
+    //       else{
+    //           _.isBlackBg=false
+    //       }
+    //     }
+    // }
   }
 }
 </script>
 <style scoped lang="scss">
 @import '~/assets/font/iconfont.css';
 @import '~assets/scss/mixin';
+.page{
+    background: #f1f2e9;
+}
 .header {
   position: fixed;
   width: 100%;
@@ -128,11 +177,15 @@ export default {
   left: 0;
   z-index: 20;
   padding: 22px 50px;
+  background: url(~assets/img/mask.png) repeat-x 0 0;
+  background-size: auto 100%;
+  @include transition(all 1s);
   .header-logo {
     float: left;
-    width: 432px;
-    height: 49px;
+    height: 43px;
+    width: 380px;
     background: url(~assets/img/logo.png) no-repeat 0 0;
+    background-size: 100% auto;
   }
   .header-login {
     float: right;
@@ -147,6 +200,20 @@ export default {
     a {
       color: #fffefe;
     }
+    .login-out{
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+  .user-name{
+    float:right;
+    height: 44px;
+    line-height: 42px;
+    font-size: 16px;
+     color: #fff;
+    a{
+     color: #fff;
+    }
   }
   .header-nav {
     float: right;
@@ -157,7 +224,7 @@ export default {
       .nav-name {
         position: relative;
         display: block;
-        padding: 0 40px;
+        padding: 0 27px;
         height: 44px;
         line-height: 44px;
         z-index: 3;
@@ -169,8 +236,8 @@ export default {
       .nav-panel {
         position: absolute;
         padding: 15px;
-        width: 100%;
-        left: 0;
+        width: 400px;
+        left: -125px;
         z-index: 2;
         background-color: #f6f9fc;
         border-radius: 4px;
@@ -188,17 +255,11 @@ export default {
       }
     }
   }
+  &.black{
+    @include box-shadow(inset 0 88px 50px rgba(0,0,0,0.8));
+  }
 }
-.header-mask {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  z-index: 19;
-  height: 93px;
-  background: url(~assets/img/mask.png) repeat-x 0 0;
-  background-size: auto 100%;
-}
+
 .slide {
   position: relative;
   border-bottom: 1px solid #85867c;
@@ -235,6 +296,7 @@ export default {
   width: 100%;
   left: 0;
   top: 50%;
+  z-index: 5;
   .search-box {
     width: 542px;
     height: 44px;
