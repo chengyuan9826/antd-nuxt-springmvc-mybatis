@@ -1,11 +1,8 @@
 package com.report.controller.ai;
 
-import com.report.common.datasource.DynamicDataSource;
 import com.report.common.util.Cache;
-import com.report.controller.report.ReportController;
 import com.report.dao.report.ReportMapper;
 import com.report.model.wp.Post;
-import com.report.service.user.IUserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +38,7 @@ public class PostController {
      */
     @ResponseBody
     @RequestMapping(value = "/list.do")
-    public Map<String, Object> list(HttpServletRequest request, @RequestBody(required = true)Map<String, Object> param, HttpSession session) {
+    public Map<String, Object> list(HttpServletRequest request, @RequestBody(required = true) Map<String, Object> param, HttpSession session) {
         //取参数
         //返回结果
         Map<String, Object> result = new HashMap<String, Object>();
@@ -62,23 +59,23 @@ public class PostController {
         }
         int pageSize = (int) param.get("pageSize");
         int offset = (pageNum - 1) * pageSize;
-        param.put("limit",pageSize);
-        param.put("offset",offset);
+        param.put("limit", pageSize);
+        param.put("offset", offset);
         //操作数据库
         try {
             list = reportMapper.queryPostList(param);
             //查询baseurl
-            String siteUrl = (String)Cache.get("siteUrl");
-            if(siteUrl == null){
+            String siteUrl = (String) Cache.get("siteUrl");
+            if (siteUrl == null) {
                 siteUrl = reportMapper.queryOption("siteurl");
-                Cache.set("siteUrl",siteUrl);
+                Cache.set("siteUrl", siteUrl);
             }
 
             String imgUrl;
             //处理list，给imgUrl添加上前缀
             for (int i = 0; i < list.size(); i++) {
                 imgUrl = list.get(i).getThumb_url();
-                imgUrl = siteUrl+"/wp-content/uploads/"+imgUrl;
+                imgUrl = siteUrl + "/wp-content/uploads/" + imgUrl;
                 list.get(i).setThumb_url(imgUrl);
             }
         } catch (Exception e) {
@@ -101,7 +98,7 @@ public class PostController {
      */
     @ResponseBody
     @RequestMapping(value = "/detail.do")
-    public Map<String, Object> detail(HttpServletRequest request, @RequestBody(required = true)Map<String, Object> param, HttpSession session) {
+    public Map<String, Object> detail(HttpServletRequest request, @RequestBody(required = true) Map<String, Object> param, HttpSession session) {
         Map<String, Object> result = new HashMap<String, Object>();
         //取参数
         if (param.get("postId") == null) {
@@ -123,6 +120,42 @@ public class PostController {
         result.put("state", state);
         result.put("msg", msg);
         result.put("post", post);
+        return result;
+    }
+
+    /**
+     * 查询一个文章前面和后面的两个ID
+     *
+     * @param postId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/sideids.do")
+    public Map<String, Object> sideids(Integer postId) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        //取参数
+        if (postId == null) {
+            result.put("state", -1);
+            result.put("msg", "文章ID不能为空");
+            return result;
+        }
+        //返回结果
+        String msg = "查询成功";
+        int state = 0;
+        Integer prevPostId = null;
+        Integer nextPostId = null;
+        //查询数据库
+        try {
+            prevPostId = reportMapper.selectPrevId(postId);
+            nextPostId = reportMapper.selectNextId(postId);
+        } catch (Exception e) {
+            state = -1;
+            msg = e.getMessage();
+        }
+        result.put("state", state);
+        result.put("msg", msg);
+        result.put("prevPostId", prevPostId);
+        result.put("nextPostId", nextPostId);
         return result;
     }
 }

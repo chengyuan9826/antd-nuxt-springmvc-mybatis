@@ -127,6 +127,8 @@ public class ReportController {
         int count = 0;
         int errorCount= 0;
         UUID uuid = null;
+        //失败的列表
+        List<String> errList = new ArrayList<String>();
         for (int i = 0; i < lists.length; i++) {
             File userRootFolder = lists[i];
             File[] userRootFolderFiles = userRootFolder.listFiles(filter);
@@ -166,6 +168,7 @@ public class ReportController {
                             } catch (ImageErrorException e) {
                                 errorCount++;
                                 log.error(e.getMessage());
+                                errList.add(newFile.getAbsolutePath());
                                 continue;
                             }
                             imgYearMonthName = FileUtil.getYearMonthName(userDocument);
@@ -222,6 +225,7 @@ public class ReportController {
         }
         log.debug("所有文章插入成功，");
         result.put("state", 0);
+        result.put("errorList",errList);
         result.put("msg", "批量插入成功，成功条数：" + count + "，失败条数：" + errorCount + "。具体失败信息请查看后端日志。");
         return result;
     }

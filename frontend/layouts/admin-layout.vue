@@ -22,13 +22,14 @@
           @titleClick="titleClick"
         >
           <span slot="title">
-            <a-icon type="bar-chart" /><span>上传统计</span>
+            <a-icon type="bar-chart" /><span>菜单</span>
           </span>
           <a-menu-item key="1"><nuxt-link to="/admin">上传总数</nuxt-link></a-menu-item>
-          <a-menu-item key="2">精品统计</a-menu-item>
-          <a-menu-item key="3">PSD统计</a-menu-item>
-          <a-menu-item key="4"><nuxt-link to="/admin/upload">批量上传</nuxt-link></a-menu-item>
-          <a-menu-item key="5"><nuxt-link to="/admin/publish">批量发布</nuxt-link></a-menu-item>
+          <!-- <a-menu-item key="2">精品统计</a-menu-item> -->
+          <!-- <a-menu-item key="3">PSD统计</a-menu-item> -->
+          <a-menu-item key="4"><nuxt-link to="/admin/upload">批量上传PSD</nuxt-link></a-menu-item>
+          <!-- <a-menu-item key="4"><nuxt-link to="/admin/upload">批量上传PSD</nuxt-link></a-menu-item> -->
+          <a-menu-item key="5"><nuxt-link to="/admin/publish">批量审核发布</nuxt-link></a-menu-item>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>

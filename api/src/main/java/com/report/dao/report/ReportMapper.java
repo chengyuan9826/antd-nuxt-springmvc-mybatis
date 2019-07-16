@@ -1,9 +1,9 @@
 package com.report.dao.report;
 
 import com.report.model.report.Report;
+import com.report.model.wp.Category;
 import com.report.model.wp.Post;
 import com.report.model.wp.PostMeta;
-import javafx.geometry.Pos;
 
 import java.util.List;
 import java.util.Map;
@@ -79,4 +79,23 @@ public interface ReportMapper {
      */
     String queryOption(String optionKey);
 
+    /**
+     *
+     * @return
+     */
+    List<Category> queryCategoryList();
+
+    /**
+     * 查询一个文章ID前面的一个ID
+     * @param id
+     * @return
+     */
+    Integer selectPrevId(int id);
+
+    /**
+     * 查询一个文章ID后面的一个ID
+     * @param id
+     * @return
+     */
+    Integer selectNextId(int id);
 }

@@ -28,93 +28,99 @@ import com.report.service.user.IUserService;
 @RequestMapping("/user")
 public class UserController {
 
-	@Autowired
-	private IUserService userService;
+    @Autowired
+    private IUserService userService;
 
-	@Autowired
-	private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
-	Logger log = Logger.getLogger(UserController.class);
+    Logger log = Logger.getLogger(UserController.class);
 
-	@ResponseBody
-	@RequestMapping(value = "/login.do")
-	public Map<String, Object> login(HttpServletRequest request,@RequestBody Map<String,Object> params, HttpSession session) {
-		String username = (String) params.get("username");
-		String password = (String) params.get("password");
-		User user = userService.queryUserByUsername(username);
-		Map<String, Object> result = new HashMap<String, Object>();
-		String msg = null;
-		int state = 0;
-		if (user == null) {
-			state = 1;
-			msg = "用户不存在。";
-		} else if (!Crypt.validateWordpressPassword(password,user.getUserPass())) {
-			state = 2;
-			msg = "密码错误，请重新输入。";
-		} else {
-			msg = "验证成功！";
-			user.setUserPass(null);
-			session.setAttribute("user", user);
-		}
-		result.put("state", state);
-		result.put("msg", msg);
-		result.put("user", user);
-		return result;
-	}
+    @ResponseBody
+    @RequestMapping(value = "/login.do")
+    public Map<String, Object> login(HttpServletRequest request, @RequestBody Map<String, Object> params, HttpSession session) {
+        String username = (String) params.get("username");
+        String password = (String) params.get("password");
+        User user = userService.queryUserByUsername(username);
+        Map<String, Object> result = new HashMap<String, Object>();
+        String msg = null;
+        int state = 0;
+        if (user == null) {
+            state = 1;
+            msg = "用户不存在。";
+        } else if (!Crypt.validateWordpressPassword(password, user.getUserPass())) {
+            state = 2;
+            msg = "密码错误，请重新输入。";
+        } else {
+            msg = "验证成功！";
+            user.setUserPass(null);
+            session.setAttribute("user", user);
+        }
+        result.put("state", state);
+        result.put("msg", msg);
+        result.put("user", user);
+        return result;
+    }
 
-	/**
-	 * 获取session中的userinfo
-	 * @param request
-	 * @param session
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/getUserInfo.do")
-	public Map<String, Object> userinfo(HttpServletRequest request, HttpSession session) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		String msg = null;
-		User user = (User) session.getAttribute("user");
-		int state = 0;
-		result.put("state", state);
-		result.put("msg", msg);
-		result.put("user", user);
-		return result;
-	}
+    /**
+     * 获取session中的userinfo
+     *
+     * @param request
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getUserInfo.do")
+    public Map<String, Object> userinfo(HttpServletRequest request, HttpSession session) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        String msg = null;
+        User user = (User) session.getAttribute("user");
+        int state = 0;
+        result.put("state", state);
+        result.put("msg", msg);
+        result.put("user", user);
+        return result;
+    }
 
-	/**
-	 * 用户退出
-	 * 
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("/logout.do")
-	public String loginOut(HttpSession session) {
-		Object o = session.getAttribute("user");
-		if (o != null) {
-			session.removeAttribute("user");
-		}
-		return "login";
-	}
+    /**
+     * 用户退出
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping("/logout.do")
+    public String loginOut(HttpSession session) {
+        Object o = session.getAttribute("user");
+        if (o != null) {
+            session.removeAttribute("user");
+        }
+        return "login";
+    }
 
-	/**
-	 * 查询用户列表
-	 * 
-	 * @param map
-	 * @param user
-	 * @return
-	 */
-	@RequestMapping("/userList.do")
-	public String queryUser(ModelMap map, User user) {
-		return "user/userList";
-	}
+    /**
+     * 查询用户列表
+     *
+     * @return
+     */
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public Map<String, Object> queryUser() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        int state = 0;
+        String msg = "查询成功";
+        List<User> list = null;
 
-	/**
-	 * 跳转到查看用户页面
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/home.do")
-	public String toViewUserPage() {
-		return "home";
-	}
+        try {
+            list = userMapper.queryUserList();
+        } catch (Exception e) {
+            msg = e.getMessage();
+            state = -1;
+        }
+        result.put("list", list);
+        result.put("state", state);
+        result.put("msg", msg);
+        return result;
+
+    }
+
 }
