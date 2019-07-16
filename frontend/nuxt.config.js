@@ -1,5 +1,5 @@
 const pkg = require('./package')
-const mainThemeColor = '#1DA57A';
+const mainThemeColor = '#1890ff'
 module.exports = {
   mode: 'universal',
 
@@ -30,7 +30,7 @@ module.exports = {
    ** Global CSS
    */
   // css: ['~/assets/less/antd-theme/index.less'],
-  css: ['ant-design-vue/dist/antd.less','~/assets/scss/common.scss'],
+  css: ['ant-design-vue/dist/antd.less', '~/assets/scss/common.scss'],
 
   /*
    ** Plugins to load before mounting the App
@@ -54,7 +54,7 @@ module.exports = {
     // 非常重要，后端请求的时候会带上cookie
     proxyHeaders: true,
     // 忽略掉host，否则错误的host将引起nginx代理转发的失败
-    proxyHeadersIgnore: ['host'],
+    proxyHeadersIgnore: ['host']
   },
 
   proxy: {
@@ -75,9 +75,9 @@ module.exports = {
         modifyVars: {
           // 'primary-color': '#6453fa',
           // 'link-color': '#6453fa',
-          'border-radius-base': '2px',
+          'border-radius-base': '2px'
         },
-        javascriptEnabled: true,
+        javascriptEnabled: true
       }
     },
     // loaders: [
@@ -93,8 +93,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
-    extend (config, ctx) {
-
+    extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
@@ -105,7 +104,7 @@ module.exports = {
           options: {
             fix: true
           }
-        });
+        })
       }
     }
   }

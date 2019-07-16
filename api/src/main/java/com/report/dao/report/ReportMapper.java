@@ -60,33 +60,36 @@ public interface ReportMapper {
 
     /**
      * 查询文章列表
+     *
      * @param param
      * @return
      */
-    List<Post> queryPostList(Map<String,Object> param);
+    List<Post> queryPostList(Map<String, Object> param);
 
     /**
      * 查询文章详情
+     *
      * @param param
      * @return
      */
-    Post queryPostDetail(Map<String,Object> param);
+    Post queryPostDetail(Map<String, Object> param);
 
     /**
      * 从options表中查询数据
+     *
      * @param optionKey
      * @return
      */
     String queryOption(String optionKey);
 
     /**
-     *
      * @return
      */
     List<Category> queryCategoryList();
 
     /**
      * 查询一个文章ID前面的一个ID
+     *
      * @param id
      * @return
      */
@@ -94,8 +97,25 @@ public interface ReportMapper {
 
     /**
      * 查询一个文章ID后面的一个ID
+     *
      * @param id
      * @return
      */
     Integer selectNextId(int id);
+
+    /**
+     * 查询文章数量，周数量，指定日期之间的数量等
+     *
+     * @param param
+     * @return
+     */
+    Integer queryPostCount(Map<String, Object> param);
+
+    /**
+     * 查询某个用户的待发布的文章数量
+     *
+     * @param userLogin
+     * @return
+     */
+    List<Map<String, Object>> queryUserPostCount(String userLogin,String postStatus);
 }

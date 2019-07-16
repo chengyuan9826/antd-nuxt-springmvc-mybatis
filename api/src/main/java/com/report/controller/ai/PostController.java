@@ -1,5 +1,6 @@
 package com.report.controller.ai;
 
+import com.report.common.model.Result;
 import com.report.common.util.Cache;
 import com.report.dao.report.ReportMapper;
 import com.report.model.wp.Post;
@@ -157,5 +158,24 @@ public class PostController {
         result.put("prevPostId", prevPostId);
         result.put("nextPostId", nextPostId);
         return result;
+    }
+
+    /**
+     * 查询某个用户未发布的文章数量
+     *
+     * @param userLogin
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/pendingPostCount.do")
+    public Result pendingPostCount(String userLogin) {
+        Result r = new Result();
+        List<Map<String, Object>> list = reportMapper.queryUserPostCount(userLogin, "pending");
+        if (list.size() == 0) {
+            r.getResult().put("count", 0);
+        } else {
+            r.getResult().put("count", list.get(0).get("count"));
+        }
+        return r;
     }
 }
