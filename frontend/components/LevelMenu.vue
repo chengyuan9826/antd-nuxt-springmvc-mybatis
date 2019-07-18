@@ -1,7 +1,7 @@
 <template>
     <ul class="nav-menu">
         <li v-for="level in levelData" :key="level.termId">
-            <a :href="'/?termId='+ level.termId" :class="{active:level.termId===termId}" class="nav-name">{{level.name}}</a>
+            <a :href="'/?termId='+ level.termId" :class="{active:level.termId==$route.query.termId}" class="nav-name">{{level.name}}</a>
             <level-menu  v-if="level.children" :level-data="level.children"></level-menu>
         </li>
     </ul>
@@ -9,23 +9,25 @@
 <script>
 export default {
   name: 'LevelMenu',
-  props: { levelData: Array },
-  data() {
-    return {
-      termId: null
+  props: { 
+    levelData:{
+      type:Array,
+      default:function(){
+        return []
+      }
     }
   },
-  watch: {
-    $route() {
-      this.termId = this.$route.query.termId
+  data() {
+      return {
+      }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/scss/mixin';
 .nav-menu {
+  @include clearfix;
   > li {
     float: left;
     width: 33.33%;

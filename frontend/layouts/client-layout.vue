@@ -1,19 +1,21 @@
 <template>
-  <div class="page">
-      <header class="header" :class="{black:isBlackBg}">
-          <div class="header-logo"></div>
-          <div  v-if="userName" class="user-name">
-            <a :href="'/?author='+ userId">{{userName}}</a>
+  <div class="page" :class="{fixedtop:fixedTop}">
+      <header class="header">
+          <a href="/" target="_blank" class="header-logo"></a>
+          <div v-if="userInfo.username" class="user-name">
+            <a :href="'/?postAuthor='+ userInfo.userid">{{userInfo.username}}</a>
             <span @click="loginOut">退出</span>
           </div>
           <div v-else class="header-login">
-              <nuxt-link to="/login">登录</nuxt-link>/<nuxt-link to="/login">注册</nuxt-link>
+            <nuxt-link to="/login">登录</nuxt-link>/<nuxt-link to="/login">注册</nuxt-link>
           </div>
-
+          <!-- <div class="backstage">
+            <nuxt-link to="http://design.zxxk.com/wp-admin/">去后台</nuxt-link>
+          </div> -->
           <ul class="header-nav">
             <template v-for="(item,index) in categoryList">
               <!-- 为了让最后一个item不显示 -->
-              <li v-if="index!==categoryListLength-1"  :key="item.termId"  @mouseenter="hoverShowMenu(index)" @mouseleave="hoverShowMenu(-1)">
+              <li v-if="index!==categoryListLength-1" :key="item.termId"  :class="{active:isShowMenu===index}"  @mouseenter="hoverShowMenu(index)" @mouseleave="hoverShowMenu(-1)">
                   <a :href="'/?termId='+item.termId" class="nav-name">{{item.name}}<i class="iconfont iconxialajiantou"></i></a>
                   <transition name="move">
                     <div v-show="isShowMenu===index" class="nav-panel">
@@ -24,90 +26,110 @@
             </template>
           </ul>
       </header>
-        <div class="slide">
-           <div class="swiper-container">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="~/assets/img/banner-1.jpg"/></div>
-                <div class="swiper-slide"><img src="~/assets/img/banner-2.jpg"/></div>
-              </div>
-              <div ref="dots" class="swiper-dots">
-                <span class="dot" :class="{active:currentSlideIndex===0}"></span>
-                <span class="dot" :class="{active:currentSlideIndex===1}"></span>
-              </div>
-              <!-- <div class="swiper-button-prev"></div>
-              <div class="swiper-button-next"></div> -->
-            </div>
-            <div class="search">
-                <div class="search-box">
-                    <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @keyup.enter="search()">
-                    <button class="btn" @click="search()">
-                      <i class="iconfont iconsousuo"></i>
-                    </button>
-                </div>
-                <ul class="search-menu">
-                    <li><a href="">热门搜索：</a></li>
-                    <li><a href="/?keyWord=专题回顾">专题回顾</a></li>
-                    <li><a href="/?keyWord=端午">端午</a></li>
-                    <li><a href="/?keyWord=星空">星空</a></li>
-                    <li><a href="/?keyWord=海报">海报</a></li>
-                    <li><a href="/?keyWord=背景">背景</a></li>
-                    <li><a href="/?keyWord=科技">科技</a></li>
-                    <li><a href="/?keyWord=卡通">卡通</a></li>
-                    <li><a href="/?keyWord=节日">节日</a></li>
-                </ul>
-            </div>
+      <div class="search" :class="{long:longSearchBox}">
+        <div class="search-box">
+          <span class="close">X</span>
+          <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @keyup.enter="search()">
+          <button class="btn" @click="search()">
+            <i class="iconfont iconsousuo"></i>
+          </button>
         </div>
-        <nuxt />
+        <ul class="search-menu">
+          <li><a href="">热门搜索：</a></li>
+          <li v-for="word in hotWords" :key="word.id"><a :class="{active:searchWord==word.name}" :href="'/?keyWord='+word.name">{{word.name}}</a></li>
+        </ul>
+      </div>
+      <nuxt />
   </div>
 </template>
 <script>
-import Swiper from 'swiper'
-import 'swiper/dist/css/swiper.css'
+
 import api from '~/assets/js/common/api'
 import levelMenu from '~/components/LevelMenu'
 import constants from '~/assets/js/common/constants'
 export default {
+  name:"ClientLayout",
   components:{
      levelMenu
   },
   data() {
     return {
       isShowMenu: -1,
-      currentSlideIndex: 1,// 轮播 当前index
-      slideLength: 2,
       categoryList: [],// 分类信息
       categoryListLength:0,
+
+      fixedTop:false,// 搜索框固定在顶部
+      longSearchBox:false,// 搜索框固定在顶部，鼠标聚焦，搜索框变长
       searchWord:'',// 检索关键字
-      userName:'',// 用户名
-      userId:0,// 用户id
-      isBlackBg:false
+      hotWords:[
+        {
+          id:0,
+          name:'专题',
+        },
+        {
+          id:1,
+          name:'端午',
+        },
+       {
+          id:2,
+          name:'星空',
+        },
+       {
+          id:3,
+          name:'海报',
+        },
+        {
+          id:4,
+          name:'背景',
+        },
+                {
+          id:5,
+          name:'科技',
+        },
+                {
+          id:6,
+          name:'卡通',
+        },
+                {
+          id:7,
+          name:'节日',
+        }
+      ],
+
+      userInfo:{
+        username:'',// 用户名
+        userid:0,// 用户id
+      }
     }
   },
-
+  
+  watch:{
+    $route(){
+      this.searchWord=this.$route.query.keyWord||''
+    }
+  },
+  created(){
+    this.searchWord=this.$route.query.keyWord||''
+  },
   mounted() {
-    // eslint-disable-next-line
-    //轮播
-    this.slick()
-    
     // 获取分类信息
     this.getCategoryData()
 
     // 获取用户信息
-   this.getUserInfo()
+    this.getUserInfo()
 
-   // 滚到一定位置，header bg变色
-  // this.scrollChangeHeaderBg()
+    this.scrollChangeLayout()
 
   },
   methods: {
     getUserInfo(){
-       this.userName=localStorage.getItem(constants.user.usernameKey)
-       this.userId=localStorage.getItem(constants.user.useridKey)
+        this.userName=localStorage.getItem(constants.user.usernameKey)
+        this.userId=localStorage.getItem(constants.user.useridKey)
     },
 
     loginOut(){
        localStorage.setItem(constants.user.usernameKey,'')
-       this.userName=''
+       this.userInfo.username=''
     },
 
     // 下拉菜单显示
@@ -117,7 +139,8 @@ export default {
 
     // 搜索
     search(){
-       this.$router.push({name:"index",query:{keyWord:this.searchWord}});
+      this.longSearchBox=true;
+      this.searchWord&& (window.location.href='/?keyWord='+this.searchWord)
     },
 
     // 获取分类信息
@@ -128,39 +151,19 @@ export default {
         this.categoryListLength=data.list.length
       }
     },
-
-    // swiper轮播
-    slick() {
-      let _ = this
-      let slide = new Swiper('.swiper-container', {
-        autoplay: true,
-        loop: true,
-        on: {
-          slideChangeTransitionEnd: function(event) {
-            _.currentSlideIndex =
-              this.activeIndex >= _.slideLength
-                ? this.activeIndex - _.slideLength
-                : this.activeIndex
-          }
+    scrollChangeLayout(){
+      let _=this;
+      window.addEventListener('scroll',function(){
+        let scrollTop = document.documentElement.scrollTop;
+        if (!_.$route.query.id){
+        if(scrollTop >= 200){
+          _.fixedTop=true
+        }else{
+           _.fixedTop=false
         }
-        // nextButton: '.swiper-button-next',
-        // prevButton: '.swiper-button-prev'
-      })
-    },
-
-    // 页面滚动，header背景变色
-    // scrollChangeHeaderBg(){
-    //   let _=this;
-    //   window.onscroll=function(){
-    //       let scrollTop = document.documentElement.scrollTop;
-    //       if(scrollTop >600){
-    //         _.isBlackBg=true
-    //       }
-    //       else{
-    //           _.isBlackBg=false
-    //       }
-    //     }
-    // }
+        }
+      });
+    }
   }
 }
 </script>
@@ -169,6 +172,35 @@ export default {
 @import '~assets/scss/mixin';
 .page{
     background: #f1f2e9;
+    &.fixedtop{
+      .header{
+         background: #303030;
+      }
+      .search{
+        width:100px;
+        left:430px;
+        right:auto;
+        top: 25px;
+        .search-box{
+          width:100%;
+          input{
+            padding-left: 30px;
+          }
+          .close{
+            display: block;
+          }
+        }
+        .search-menu{
+          display: none;
+        }
+        &.long{
+          width:400px;
+          .search-box{
+            width:360px;
+          }
+        }
+      }
+  }
 }
 .header {
   position: fixed;
@@ -176,10 +208,10 @@ export default {
   top: 0;
   left: 0;
   z-index: 20;
-  padding: 22px 50px;
+  padding: 25px 30px 21px;
   background: url(~assets/img/mask.png) repeat-x 0 0;
   background-size: auto 100%;
-  @include transition(all 1s);
+  transition:all 1s;
   .header-logo {
     float: left;
     height: 43px;
@@ -215,6 +247,19 @@ export default {
      color: #fff;
     }
   }
+  .backstage{
+    float: right;
+    padding-right: 20px;
+      height: 44px;
+    line-height: 44px;
+    a{
+      font-size:16px;
+      color:#fff;
+      &:hover{
+        color: #4499ff;
+      }
+    }
+  }
   .header-nav {
     float: right;
     padding-right: 20px;
@@ -224,7 +269,7 @@ export default {
       .nav-name {
         position: relative;
         display: block;
-        padding: 0 27px;
+        padding: 0 14px;
         height: 44px;
         line-height: 44px;
         z-index: 3;
@@ -232,11 +277,16 @@ export default {
         color: #fffefe;
         overflow: hidden;
         cursor: pointer;
+         transition:all 0.4s;
+        .iconfont{
+          display: inline-block;
+          transition: all 0.4s;
+        }
       }
       .nav-panel {
         position: absolute;
         padding: 15px;
-        width: 400px;
+        width: 360px;
         left: -125px;
         z-index: 2;
         background-color: #f6f9fc;
@@ -253,51 +303,30 @@ export default {
           border-bottom-color: #f6f9fc;
         }
       }
-    }
-  }
-  &.black{
-    @include box-shadow(inset 0 88px 50px rgba(0,0,0,0.8));
-  }
-}
-
-.slide {
-  position: relative;
-  border-bottom: 1px solid #85867c;
-  .swiper-slide {
-    img {
-      display: block;
-      height: 590px;
-    }
-  }
-  .swiper-dots {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 0;
-    z-index: 4;
-    .dot {
-      margin: 0 10px;
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      cursor: pointer;
-      &.active {
-        background: #fff;
+      &.active{
+        .nav-name{
+          .iconfont{
+            transform: rotate(-180deg);
+          }
+        }
       }
     }
   }
+  &.black{
+    box-shadow:inset 0 88px 50px rgba(0,0,0,0.8);
+  }
 }
 .search {
-  position: absolute;
-  width: 100%;
+  position: fixed;
+  width: 800px;
   left: 0;
-  top: 50%;
-  z-index: 5;
+  right:0;
+  margin: 0 auto;
+  top: 295px;
+  z-index: 21;
+  transition: top 0.3s;
   .search-box {
+    position: relative;
     width: 542px;
     height: 44px;
     margin: 0 auto;
@@ -307,15 +336,18 @@ export default {
     @include clearfix;
     input {
       float: left;
-      padding: 0 15px;
-      width: 90%;
+      padding: 0 44px 0 30px;
+      width: 100%;
       height: 44px;
       background: none;
       color: #313131;
     }
     .btn {
-      float: left;
-      width: 10%;
+      position:absolute;
+      right:0;
+      top:0;
+      z-index:2;
+      width: 44px;
       height: 44px;
       background: none;
       cursor: pointer;
@@ -323,6 +355,18 @@ export default {
         font-size: 22px;
         color: #969696;
       }
+    }
+    .close{
+      position: absolute;
+      left:0;
+      top:0;
+      height: 44px;
+      width:26px;
+      text-align: center;
+      line-height: 44px;
+      z-index: 2;
+      color:#969696;
+      cursor: pointer;
     }
   }
   .search-menu {
@@ -337,9 +381,13 @@ export default {
         display: block;
         font-size: 14px;
         color: #fff;
+        &:hover,&.active{
+          color:#4499ff;
+        }
       }
     }
   }
+  
 }
 .move-enter-active {
   transition: all 0.3s ease;

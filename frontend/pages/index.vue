@@ -1,5 +1,17 @@
 <template>
     <div class="home" :class="[model]">
+      <div class="slide">
+           <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div v-for="item in slideData" :key="item.id" class="swiper-slide"><img :src="item.src"/></div> 
+              </div>
+                <div class="swiper-button-prev swiper-button-white"></div>
+                <div class="swiper-button-next swiper-button-white"></div>
+            </div>
+            <div ref="dots" class="swiper-dots">
+                <span v-for="(dot,index) in slideData.length" :key="index" class="dot" :class="{active:currentSlideIndex===index}" @mouseenter="toSlide(index)"></span>
+            </div>
+      </div>
         <div class="digital-panel">
           <div class="item">
             <div class="num"><em>1，995</em>/份</div>
@@ -116,13 +128,13 @@
                 <li class="white"></li>
             </ul>
             <div class="tag-filter">
-                <a :class="{active:parameter.termId==1}" class="tag-itme" href="/?temId=1">字体</a>
-                <a :class="{active:parameter.termId==14}" class="tag-itme" href="/?termId=14">Banner</a>
-                <a :class="{active:parameter.termId==28}" class="tag-itme" href="/?termId=28">专题设计</a>
-                <a :class="{active:parameter.termId==29}" class="tag-itme" href="/?termId=29">界面</a>
-                <a :class="{active:parameter.termId==25}" class="tag-itme" href="/?termId=25">App</a>
-                <a :class="{active:parameter.termId==188}" class="tag-itme" href="/?termId=188">图标</a>
-                <a :class="{active:parameter.termId==344}" class="tag-itme" href="/?termId=344">C4d</a>
+                <a :class="{active:$route.query.termId==1}" class="tag-itme" href="/?termId=1">字体</a>
+                <a :class="{active:$route.query.termId==14}" class="tag-itme" href="/?termId=14">Banner</a>
+                <a :class="{active:$route.query.termId==28}" class="tag-itme" href="/?termId=28">专题设计</a>
+                <a :class="{active:$route.query.termId==29}" class="tag-itme" href="/?termId=29">界面</a>
+                <a :class="{active:$route.query.termId==25}" class="tag-itme" href="/?termId=25">App</a>
+                <a :class="{active:$route.query.termId==188}" class="tag-itme" href="/?termId=188">图标</a>
+                <a :class="{active:$route.query.termId==344}" class="tag-itme" href="/?termId=344">C4d</a>
                 <span class="tag-itme">Filters</span>
                 <div class="shot-sizes">
                     <span class="form-btn">
@@ -142,129 +154,78 @@
             </div>
         </div>
         <h5 class="module-title material-bg">海量AI素材</h5>
-        <div class="waterfall-menu">
-          <no-ssr>
-            <div v-masonry transition-duration="0.3s" item-selector=".item" class="material-menu">
-              <div v-for="(item, index) in waterfallData" :key="index" v-masonry-tile class="item">
-                <a :href="'/detail?id='+item.id" class="pic"><img :src="item.thumb_url"></a>
-                <p class="name"><a :href="'/detail?id='+item.id">{{item.post_title}}</a></p>
-                <div class="label">
-                  <span class="time">{{item.post_date.split(' ')[0]}}</span>
-                  <a :href="'/?author='+item.post_author" class="tag">{{item.display_name}}</a>
-                </div>
-              </div>
-            </div>
-          </no-ssr>
-          <div v-show="!hasMore" class="end-tip">到底了，没有更多了~~</div>
-        </div>
+        <waterfall></waterfall>
     </div>
 </template>
 <script>
 import api from '~/assets/js/common/api'
+import Swiper from 'swiper'
+import 'swiper/dist/css/swiper.css'
 import { message } from 'ant-design-vue'
+import waterfall from '~/components/Waterfall'
 export default {
   layout: 'client-layout',
   components: {
+    waterfall
   },
   data() {
     return {
       model:'',// 四格或者六格模式
-      waterfallData: [],
       errorMsg:'',
-      tagCurrent:-1,
-      pageNum: 1,
-      parameter:{
-        pageSize:20,
-        termId:null,// 类别的id
-        keyWord:'',// 搜索关键字
-        postAuthor:null// 作者
-      },
-      hasMore:true,// 列表数据是否到底了
-      isLoading:true,// 瀑布流是否完成一次加载
-     
+      currentSlideIndex: 0,// 轮播 当前index
+      slide:null,
+      slideData:[
+        {
+          id:1,
+          src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-1.jpg",
+        },
+        {
+          id:2,
+          src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-2.jpg",
+        },
+                {
+          id:3,
+          src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-3.jpg",
+        }
+      ],
     }
   },
   watch:{
-    $route(){
-      // 路由变化，请求的列表参数也变化
-      this.parameter=Object.assign(this.parameter,this.$route.query);
-    },
-    parameter:{
-      handler(){
-        this.requestByCategory()
-      },
-      deep:true
-    }
   },
   created(){
-    // 页面创建时获取的参数
-    this.parameter=Object.assign(this.parameter,this.$route.query);
   },
   mounted() {
-    // 页面滚动获取waterfall加载数据
-    this.getNewScrollData()
-    this.getWaterfallData()
+    // eslint-disable-next-line
+    //轮播
+    this.slick()
   },
   methods: {
-    async getWaterfallData() {
-      if(!this.hasMore){
-        return;
-      }
-      
-      // 开始请求,显示loading动画,请求完成前,页面滚动不可以加载数据
-      message.loading('loading', 0)
-      this.isLoading=true
-
-      let { data } = await this.$axios.post(api.waterfall, {...this.parameter,pageNum:this.pageNum})
-      if (data.state === 0) {
-
-        // 请求成功,关闭loading
-        message.destroy()
-        this.isLoading=false
-
-        // 判断有没有更多
-        data.list.length<this.pageNum?this.hasMore=false:this.pageNum++
-        
-        // 追加数据
-        this.waterfallData=this.waterfallData.concat(data.list)
-    
-        // 重绘瀑布流
-        this.$redrawVueMasonry()
-      
-      } 
-      else {
-        this.errorMsg = data.msg
-      }
-    },
-
-    // 滚动页面获取数据
-    getNewScrollData(){
-        let _=this
-        window.onscroll=function(){
-          let scrollTop = document.documentElement.scrollTop;
-          let documentHeight =document.body.scrollHeight;
-          let windowHeight = window.innerHeight;
-          if(scrollTop + windowHeight >= documentHeight-100){
-            // 当前请求完成，数据还没到底
-            (!_.isLoading)&&_.getWaterfallData(true)
-          }
-        }
-    },
-    
-    // 按类别请求waterfall
-    requestByCategory(){
-      // 三个属性值的设置都是为了搜索，局部刷新
-      this.pageNum=1
-      this.hasMore=true
-      this.waterfallData=[]
-      
-      this.getWaterfallData()
-    },
-    
     // 切换瀑布流的模块大小
     changeMasonrySize(model){
       this.model=model;
-      this.$redrawVueMasonry()
+      this.$redrawVueMasonry();
+    },
+     // swiper轮播
+    slick() {
+      let _ = this
+      this.slide = new Swiper('.swiper-container', {
+        autoplay : true,
+        effect : 'fade',
+        loop:true,
+        on: {
+          transitionStart: function(event) {
+            _.currentSlideIndex =this.realIndex
+          }
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      })
+    },
+    toSlide(index){
+        this.slide.slideTo(index,1000,false)
+        this.currentSlideIndex=index; 
     }
   }
 }
@@ -301,7 +262,7 @@ export default {
       width:1832px;
     }
     .waterfall-menu{
-      width:1680px;
+      width:1832px;
       .material-menu {
         width:1832px;
         .item {
@@ -310,6 +271,71 @@ export default {
       }
     }
   }
+  
+.slide {
+  position: relative;
+  border-bottom: 1px solid #85867c;
+  .swiper-container{
+      .swiper-slide {
+        transition:all 0.4s;
+        img {
+          display: block;
+          height: 590px;
+        }
+      }
+    .swiper-button-prev, .swiper-button-next{
+      transition:all 0.4s;
+      opacity: 0;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      border-radius:100%;
+      background-size: cover;
+      background-color:rgba(0,0,0,0.4);
+      background-size: 20px 20px;
+      &.swiper-button-disabled{
+        opacity: 0.2;
+      }
+    }
+    &:hover{
+      .swiper-button-prev, .swiper-button-next{
+        opacity: 1;
+        background-color:rgba(0,0,0,0.6);
+        &:hover{
+            background-color:rgba(0,0,0,0.8);
+        }
+      }
+      .swiper-button-prev{
+        left:20px;
+      }
+      .swiper-button-next{
+        right:20px;
+      }
+    }
+  }
+
+      .swiper-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0;
+        z-index: 4;
+        .dot {
+          margin: 0 10px;
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          border: 2px solid #fff;
+          border-radius: 50%;
+          cursor: pointer;
+          &.active {
+            background: #fff;
+          }
+        }
+      }
+}
   .digital-panel{
     width:1680px;
     margin: 0 auto;
@@ -375,8 +401,8 @@ export default {
         padding: 10px;
         position: relative;
         overflow: hidden;
-        @include transition(all 0.5s linear);
-        @include transform(rotateY(0deg));
+        transition:all 0.5s linear;
+        transform:rotateY(0deg);
         background: #fff;
         box-shadow: 0 8px 8px 0 #e0e6e7;
         border-radius: 8px;
@@ -398,18 +424,18 @@ export default {
           z-index: 5;
           padding: 40px 15px 0;
           background: rgba(0, 0, 0, 0);
-          @include transition(all 0.3s linear);
+          transition:all 0.3s linear;
           position: absolute;
           top: 0;
           left: 0;
           color: #fff;
-          @include transform(rotateY(180deg));
+          transform:rotateY(180deg);
           .subtitle {
             display: block;
             font-size: 22px;
             color: #fff;
             line-height: 36px;
-            @include transition(all 0.3s linear);
+            transition:all 0.3s linear;
             @include opacity(0);
           }
           .desc-content {
@@ -418,7 +444,7 @@ export default {
             line-height: 30px;
             display: block;
             text-align: center;
-            @include transition(all 0.3s linear);
+            transition:all 0.3s linear;
             @include opacity(0);
           }
         }
@@ -426,7 +452,7 @@ export default {
       &:hover,
       &.active {
         .item-inner {
-          @include transform(rotateY(180deg));
+          transform:rotateY(180deg);
           .desc {
             background: rgba(0, 0, 0, 0.8);
             .subtitle {
@@ -475,7 +501,7 @@ export default {
       background: #fff;
       cursor: pointer;
       border: 2px solid #e8eadf;
-      @include transition(all 0.2s);
+      transition:all 0.2s;
       &.colour {
         background: url(~assets/img/title-bg.png) no-repeat 0 -320px;
       }
@@ -547,11 +573,10 @@ export default {
          width:82px;
          border-radius: 4px;
          border: 1px solid #bbb;
-         -webkit-box-shadow: 0px 3px 5px rgba(0,0,0,0.04);
          box-shadow: 0px 3px 5px rgba(0,0,0,0.04);
          background: #fff;
-         @include transition(all 0.4s);
-         @include transform(translateY(-40px));
+         transition:all 0.4s;
+         transform:translateY(-40px);
          &:before,&:after{
             position: absolute;
             width: 0;
@@ -595,77 +620,13 @@ export default {
       &:hover{
         .large-small{
           display: block;
-          @include transform(translateY(0));
+          transform:translateY(0);
         }
       }
     }
   }
 }
-.waterfall-menu{
-    width:1680px;
-    margin: 0 auto;
-    .material-menu {
-      position: relative;
-      width:1680px;
-      .item {
-        width: 250px;
-        margin: 15px;
-        background: #fff;
-        border-radius: 3px;
-        overflow: hidden;
-        @include transition(all 0.2s);
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.07);
-        .pic {
-          display: block;
-          width: 100%;
-          padding: 10px;
-          overflow: hidden;
-          max-height: 400px;
-          img{
-            width: 100%;
-            display: block
-          }
-        }
-        &:hover{
-          transform: translateY(-6px);
-          -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-      }
-      .name {
-        height: 40px;
-        padding: 0 10px;
-        line-height: 40px;
-        @include single-line;
-        font-size: 16px;
-        color: #000;
-      }
-      .label {
-        padding: 0 10px;
-        @include clearfix;
-        padding-bottom: 6px;
-        .time,.tag {
-          float: left;
-          height: 18px;
-          line-height: 18px;
-          font-size: 12px;
-          color: #898989;
-        }
-        .tag {
-          float: right;
-        }
-      }
-    }
-}
 
-.end-tip{
-  height: 60px;
-  line-height: 60px;
-  font-size:16px;
-  color: #999;
-  text-align: center;
-}
 
 @media screen and (max-width: 1620px) {
   .material-menu{

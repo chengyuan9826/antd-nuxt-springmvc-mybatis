@@ -1,7 +1,0 @@
-@mixin animation($val) {
--webkit-animation:$val; /* Safari 和 Chrome */
--moz-animation: $val;
-  -ms-animation: $val;
-  -o-animation:$val;
-  animation:$val;
-}
