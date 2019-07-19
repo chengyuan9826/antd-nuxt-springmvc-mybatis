@@ -1,4 +1,5 @@
-import constants from '~/assets/js/service/constants';
+import constants from '~/assets/js/common/constants';
+
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 const hasOwn = function (obj, key) {
@@ -198,6 +199,11 @@ const util = {
         : text.substr(0, len);
     }
     return text;
-  }
+  },
+
+  /**
+   * 获取列表数据
+   * @param object parameter
+   */
 };
 export default util;

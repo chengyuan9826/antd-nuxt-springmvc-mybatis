@@ -109,7 +109,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 html,
 body,
 #__nuxt,

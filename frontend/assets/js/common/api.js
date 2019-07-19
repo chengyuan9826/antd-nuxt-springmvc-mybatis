@@ -1,4 +1,4 @@
-const prefix = 'api'
+const prefix = "api";
 const api = {
   user: {
     login: `/${prefix}/user/login.do`,
@@ -15,6 +15,15 @@ const api = {
   post: {
     // 用户未发布的文章的数量
     userPendingCount: `/${prefix}/post/pendingPostCount.do`
+  },
+  index: {
+    list: `/${prefix}/post/list.do`,
+    category: `/${prefix}/api/category/list.do`,
+    count: `${prefix}/report/queryPostCount.do`
+  },
+  detail: {
+    article: `/${prefix}/post/detail.do`,
+    siblings: `${prefix}/post/sideids.do`
   }
-}
-export default api
+};
+export default api;

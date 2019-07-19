@@ -5,7 +5,7 @@
   "author": "左康生",
   "private": true,
   "scripts": {
-    "dev-debug": "node --inspect node_modules/.bin/nuxt",
+    "dev-debug": "cross-env NODE_ENV=development nodemon --inspect server/index.js --watch server",
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
@@ -21,7 +21,8 @@
     "cross-env": "5.2.0",
     "echarts": "4.2.1",
     "express": "4.17.1",
-    "nuxt": "2.4.0"
+    "nuxt": "2.4.0",
+    "vue-masonry": "0.11.7"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "0.0.1",
@@ -49,6 +50,7 @@
     "prettier": "1.16.4",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
+    "swiper": "^4.5.0",
     "vue-jest": "3.0.3"
   }
 }

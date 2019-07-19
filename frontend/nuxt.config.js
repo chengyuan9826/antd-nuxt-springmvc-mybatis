@@ -12,7 +12,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: '图片分享平台报表系统',
+    title: '设计中心-设计中心AI平台',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -35,7 +35,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui', '~/plugins/axios'],
+  plugins: ['@/plugins/antd-ui', '~/plugins/axios',{ src: '~/plugins/vue-masonry', ssr: false }],
 
   /*
    ** Nuxt.js modules
