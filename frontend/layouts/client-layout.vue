@@ -28,8 +28,8 @@
       </header>
       <div class="search" :class="{long:longSearchBox}">
         <div class="search-box">
-          <span class="close">X</span>
-          <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @keyup.enter="search()">
+          <a v-if="searchWord" href="/" class="close">X</a>
+          <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @blur="longSearchBox=false" @focus="longSearchBox=true"  @keyup.enter="search()">
           <button class="btn" @click="search()">
             <i class="iconfont iconsousuo"></i>
           </button>
@@ -139,13 +139,12 @@ export default {
 
     // 搜索
     search(){
-      this.longSearchBox=true;
       this.searchWord&& (window.location.href='/?keyWord='+this.searchWord)
     },
 
     // 获取分类信息
     async getCategoryData() {
-      let { data } = await this.$axios.post(api.category)
+      let { data } = await this.$axios.post(api.index.category)
       if (data.state === 0) {
         this.categoryList = data.list
         this.categoryListLength=data.list.length
@@ -156,7 +155,7 @@ export default {
       window.addEventListener('scroll',function(){
         let scrollTop = document.documentElement.scrollTop;
         if (!_.$route.query.id){
-        if(scrollTop >= 200){
+        if(scrollTop >= 100){
           _.fixedTop=true
         }else{
            _.fixedTop=false
@@ -178,9 +177,9 @@ export default {
       }
       .search{
         width:100px;
-        left:430px;
-        right:auto;
-        top: 25px;
+      //  left:430px;
+       // right:auto;
+        top: 8px;
         .search-box{
           width:100%;
           input{
@@ -208,22 +207,22 @@ export default {
   top: 0;
   left: 0;
   z-index: 20;
-  padding: 25px 30px 21px;
+  padding: 10px 30px 10px;
   background: url(~assets/img/mask.png) repeat-x 0 0;
   background-size: auto 100%;
   transition:all 1s;
   .header-logo {
     float: left;
-    height: 43px;
-    width: 380px;
+    height: 34px;
+    width: 370px;
     background: url(~assets/img/logo.png) no-repeat 0 0;
-    background-size: 100% auto;
+    background-size: auto 100%;
   }
   .header-login {
     float: right;
     width: 103px;
-    height: 44px;
-    line-height: 42px;
+    height: 40px;
+    line-height: 38px;
     text-align: center;
     border: 1px solid #fff;
     border-radius: 4px;
@@ -270,8 +269,8 @@ export default {
         position: relative;
         display: block;
         padding: 0 14px;
-        height: 44px;
-        line-height: 44px;
+        height: 40px;
+        line-height: 40px;
         z-index: 3;
         font-size: 16px;
         color: #fffefe;

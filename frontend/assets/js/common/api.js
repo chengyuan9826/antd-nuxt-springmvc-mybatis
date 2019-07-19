@@ -10,8 +10,15 @@ const api = {
     },
     publish:`/${prefix}/report/batchPublish.do`,
     upload:`/${prefix}/report/batchInsert.do`,
-    waterfall:`/${prefix}/post/list.do`,
-    category:`/${prefix}/api/category/list.do`,
-    detail:`/${prefix}/post/detail.do`
+    index:{
+        list:`/${prefix}/post/list.do`,
+        category:`/${prefix}/api/category/list.do`,
+        count:`${prefix}/report/queryPostCount.do`
+    },
+    detail:{
+        article:`/${prefix}/post/detail.do`,
+        siblings:`${prefix}/post/sideids.do`
+    }
+
 }
 export default api;

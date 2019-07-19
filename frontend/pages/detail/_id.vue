@@ -44,11 +44,15 @@ export default {
         this.id=this.$route.query.id;
     },
     mounted(){
+        // 获取文章
         this.getDetailContent()
+
+        // 获取文章上一篇和下一篇
+        this.getPostIdSiblings()
     },
     methods:{
        async getDetailContent(){
-           let {data}=await this.$axios.post(api.detail,{postId:this.id})
+           let {data}=await this.$axios.post(api.detail.article,{postId:this.id})
             if(data.state===0){
                this.detailContent=data.post
                this.tagList=data.post.tag.split(',')
@@ -56,7 +60,15 @@ export default {
             else{
                this.errorMsg = data.msg
             }
+       },
+       async getPostIdSiblings(){
+           let {data}=await this.$axios.post(api.detail.siblings,{postId:this.id})
+           console.log(this.id);
+           if(data.state===0){
+               
+           };
        }
+
     }
 }
 </script>

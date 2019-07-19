@@ -19,12 +19,12 @@
 import api from '~/assets/js/common/api'
 import { message } from 'ant-design-vue'
 export default {
-  name:'Waterfall',
+  name:'Waterfall', 
   data(){
     return {
       waterfallData:[],
-      pageNum: 1,
       parameter:{
+        pageNum: 1,
         pageSize:20,
         termId:null,// 类别的id
         keyWord:'',// 搜索关键字
@@ -35,19 +35,6 @@ export default {
       isLoading:true,// 瀑布流是否完成一次加载
     }   
   },
-  watch:{
-    $route(){
-      // 路由变化，请求的列表参数也变化
-      this.parameter=Object.assign(this.parameter,this.$route.query);
-    },
-    parameter:{
-      handler(){
-        this.requestByCategory()
-      },
-      deep:true,
-     // immediate:true
-    }
-  },
   created(){
     // 页面创建时获取的参数
     this.parameter=Object.assign(this.parameter,this.$route.query);
@@ -55,10 +42,12 @@ export default {
   mounted() {
     // 页面滚动获取waterfall加载数据
     this.getNewScrollData()
-    Object.keys(this.$route.query).length||this.getWaterfallData();
+
+    this.getPostMenuData();
+
   },
   methods:{
-    async getWaterfallData() {
+    async getPostMenuData() {
         if(!this.hasMore){
           return;
         }
@@ -67,7 +56,7 @@ export default {
         message.loading('loading', 0)
         this.isLoading=true
 
-        let { data } = await this.$axios.post(api.waterfall, {...this.parameter,pageNum:this.pageNum})
+        let { data } = await this.$axios.post(api.index.list, this.parameter)
         if (data.state === 0) {
 
           // 请求成功,关闭loading
@@ -75,7 +64,7 @@ export default {
           this.isLoading=false
 
           // 判断有没有更多
-          data.list.length<this.pageNum?this.hasMore=false:this.pageNum++
+          data.list.length<this.parameter.pageNum?this.hasMore=false:this.parameter.pageNum++
           
           // 追加数据
           this.waterfallData=this.waterfallData.concat(data.list)
@@ -97,21 +86,14 @@ export default {
         let windowHeight = window.innerHeight;
         if(scrollTop + windowHeight >= documentHeight-100){
           // 当前请求完成，数据还没到底
-          (!_.isLoading)&&_.getWaterfallData(true)
+          (!_.isLoading)&&_.getPostMenuData(true)
         }
       }
     },
     // 按类别请求waterfall
     requestByCategory(){
-      // 三个属性值的设置都是为了搜索，局部刷新
-      // this.pageNum=1
-      // this.hasMore=true
-      // this.waterfallData=[]
-     // let offTop=this.$refs.menu&&this.$refs.menu.offset.top;
-     // console.log(this.$refs.menu);
-     // $('body,html').animate({scrollTop:sTop+'px'});
       this.getWaterfallData()
-    },
+    }
   }  
 }
 </script>

@@ -12,25 +12,25 @@
                 <span v-for="(dot,index) in slideData.length" :key="index" class="dot" :class="{active:currentSlideIndex===index}" @mouseenter="toSlide(index)"></span>
             </div>
       </div>
-        <div class="digital-panel">
+      <div class="digital-panel">
           <div class="item">
-            <div class="num"><em>1，995</em>/份</div>
+            <div class="num"><em>{{countResult.totalNum}}</em>/份</div>
             <p class="name">设计、前端的各种灵感素材与知识库</p>
           </div>
           <div class="item">
-            <div class="num"><em>95</em>/张</div>
+            <div class="num"><em>{{countResult.todayNum}}</em>/张</div>
             <p class="name">今日新增</p>
           </div>
           <div class="item">
-            <div class="num"><em>5</em>/份</div>
-            <p class="name">本周上传精品最多 成媛</p>
+            <div class="num"><em>{{countResult.weekNum}}</em>/份</div>
+            <p class="name">本周上传精品</p>
           </div>
           <div class="item">
-            <div class="num"><em>1，995</em>/份</div>
-            <p class="name">本周上传最多 成媛</p>
+            <div class="num"><em>{{mostUser.count}}</em>/份</div>
+            <p  class="name">本周上传最多  <a :href="'/?postAuthor='+mostUser.userId">{{mostUser.username}}</a></p>
           </div>
-        </div>
-        <div class="hot-style">
+      </div>
+      <div class="hot-style">
           <h5 class="module-title style-bg">设计风格</h5>
           <div class="part-list">
               <div class="item">
@@ -153,7 +153,7 @@
                 </div>   
             </div>
         </div>
-        <h5 class="module-title material-bg">海量AI素材</h5>
+        <h5 ref="material" class="module-title material-bg">海量AI素材</h5>
         <waterfall></waterfall>
     </div>
 </template>
@@ -171,6 +171,8 @@ export default {
   data() {
     return {
       model:'',// 四格或者六格模式
+      countResult:{},// 统计结果
+      mostUser:{},
       errorMsg:'',
       currentSlideIndex: 0,// 轮播 当前index
       slide:null,
@@ -198,6 +200,8 @@ export default {
     // eslint-disable-next-line
     //轮播
     this.slick()
+    this.getUploadResult()
+    Object.keys(this.$route.query).length&&this.scrollToFixed()
   },
   methods: {
     // 切换瀑布流的模块大小
@@ -226,6 +230,19 @@ export default {
     toSlide(index){
         this.slide.slideTo(index,1000,false)
         this.currentSlideIndex=index; 
+    },
+    async getUploadResult(){
+      let {data}=await this.$axios.get(api.index.count);
+      if(data.state===0){
+        this.countResult=data.result
+        this.mostUser=data.result.weekMostUser
+      }
+    },
+    // url含有查询参数，页面直接跳到列表处
+    scrollToFixed(){
+      let fixedHeight=this.$refs.material&&this.$refs.material.offsetTop;
+      let bodyBox=document.documentElement||document.body;
+      bodyBox.scrollTop=fixedHeight;
     }
   }
 }
