@@ -99,7 +99,8 @@ export default {
       })
       if (data.state === 0) {
         // 登录成功，记录登录信息
-        // localStorage.setItem(constants.user.usernameKey, data.user.displayName)
+        localStorage.setItem(constants.user.usernameKey, data.user.displayName)
+        localStorage.setItem(constants.user.useridKey, data.user.id)
         this.$store.commit('user/SET_USER', data.user)
         this.$router.push('/')
       } else {
