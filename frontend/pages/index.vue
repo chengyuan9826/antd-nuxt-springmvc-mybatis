@@ -32,90 +32,100 @@
       </div>
       <div class="hot-style">
           <h5 class="module-title style-bg">设计风格</h5>
-          <div class="part-list">
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
-              <div class="item">
-                  <div class="item-inner">
-                      <img src="~/assets/img/style-1.jpg" alt="">
-                      <p class="item-name">中国古典风</p>
-                      <div class="desc">
-                          <p class="subtitle">极简主义</p>
-                          <span class="desc-content">最简单的表达式</span>
-                      </div>
-                  </div>
-              </div>
+          <div class="swiper-container">
+            <div class="part-list swiper-wrapper">
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=偏平插画'" class="item-inner">
+                        <img src="~/assets/img/style-1.png" alt="">
+                        <div class="desc">
+                            <p class="subtitle">扁平插画风</p>
+                            <span class="desc-content">元素边界干净整洁</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=噪点插画风'" class="item-inner">
+                        <img src="~/assets/img/style-2.png" alt="">
+                        <div class="desc">
+                            <p class="subtitle">噪点插画风</p>
+                            <span class="desc-content">光影塑造 丰富画面</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=渐变风格'"  class="item-inner">
+                        <img src="~/assets/img/style-3.png" alt="">
+                      
+                        <div class="desc">
+                            <p class="subtitle">渐变风格</p>
+                            <span class="desc-content">光影细腻 自然丰富</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=MBE风格'"  class="item-inner">
+                        <img src="~/assets/img/style-4.png" alt="">
+                        <div class="desc">
+                            <p class="subtitle">MBE风格</p>
+                            <span class="desc-content">断点描边 色彩溢出</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=剪纸风'"  class="item-inner">
+                        <img src="~/assets/img/style-5.png" alt="">
+                        <div class="desc">
+                            <p class="subtitle">剪纸风</p>
+                            <span class="desc-content">透空的视觉感受</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=孟菲斯'" class="item-inner">
+                        <img src="~/assets/img/style-6.png" alt="">
+               
+                        <div class="desc">
+                            <p class="subtitle">孟菲斯</p>
+                            <span class="desc-content">线、面组合 色彩明快</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=2.5D'" class="item-inner">
+                        <img src="~/assets/img/style-7.png" alt="">
+                    
+                        <div class="desc">
+                            <p class="subtitle">2.5D</p>
+                            <span class="desc-content">3d与2d图形的结合</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                    <a :href="'/?tagName=ARTS'" class="item-inner">
+                        <img src="~/assets/img/style-8.png" alt="">
+                   
+                        <div class="desc">
+                            <p class="subtitle">ARTS</p>
+                            <span class="desc-content">ArtTest3 Letters</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="item swiper-slide">
+                  <a :href="'/?tagName=极简主义'" class="item-inner">
+                        <img src="~/assets/img/style-9.jpg" alt="">
+                    
+                        <div class="desc">
+                            <p class="subtitle">极简主义</p>
+                            <span class="desc-content">最简单的表达式</span>
+                        </div>
+                  </a>
+                </div>
+            </div>
           </div>
-        </div>
-        <h5 class="module-title color-bg">颜色\标签筛选</h5>
+          <div class="swiper-button-prev swiper-button-black"></div>
+          <div class="swiper-button-next swiper-button-black"></div>
+      </div>
+      <h5 ref="material" class="module-title material-bg">海量AI素材</h5>
         <div class="module-filter">
             <ul class="color-filter">
                 <li class="colour"></li>
@@ -143,39 +153,42 @@
                       </svg>
                     </span>
                     <ul class="large-small">
-                      <li  title="Small with info" class="small-meta" :class="{active:model=='small'}" @click="changeMasonrySize('small')">
+                      <li  title="Small with info" class="small-meta" :class="{active:itemExtraClass==''}"  @click="changeMasonrySize('')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" height="28" viewBox="0 0 28 28" width="28" role="img" class="icon "><g stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="active"><rect height="18" rx="2" width="17" x="5" y="5"></rect><path d="m5 19h17v2c0 1.1046-.8954 2-2 2h-13c-1.10457 0-2-.8954-2-2z"></path></g></svg>
                       </li>
-                      <li title="Large with info" class="large-meta " :class="{active:model=='big'}" @click="changeMasonrySize('big')">
+                      <li title="Large with info" class="large-meta" :class="{active:itemExtraClass=='colum4'}"  @click="changeMasonrySize('colum4')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="" height="28" viewBox="0 0 28 28" width="28" role="img" class="icon "><g stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="active"><rect height="26" rx="2" width="26" x="1" y="1"></rect><path d="m1 22h26v3c0 1.1046-.8954 2-2 2h-22c-1.10457 0-2-.8954-2-2z"></path></g></svg>
                       </li>
                     </ul>
                 </div>   
             </div>
         </div>
-        <h5 ref="material" class="module-title material-bg">海量AI素材</h5>
-        <waterfall></waterfall>
+        <post-list :post-list="menuData" :item-extra-class="itemExtraClass"></post-list>
+        <div v-show="!hasMore" class="end-tip">到底了，没有更多了~~</div>
     </div>
 </template>
 <script>
 import api from '~/assets/js/common/api'
+import util from '~/assets/js/common/util'
 import Swiper from 'swiper'
 import 'swiper/dist/css/swiper.css'
 import { message } from 'ant-design-vue'
-import waterfall from '~/components/Waterfall'
+import PostList from '~/components/PostList'
 export default {
   layout: 'client-layout',
   components: {
-    waterfall
+    PostList
   },
   data() {
     return {
       model:'',// 四格或者六格模式
       countResult:{},// 统计结果
-      mostUser:{},
+      mostUser:{},// 上传最多的人
       errorMsg:'',
       currentSlideIndex: 0,// 轮播 当前index
       slide:null,
+      // 单个文章的附加class
+      itemExtraClass:'',
       slideData:[
         {
           id:1,
@@ -190,29 +203,57 @@ export default {
           src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-3.jpg",
         }
       ],
+      menuData:[],// 列表数据
+      parameter:{
+        pageNum: 1,
+        pageSize:20,
+        termId:null,// 类别的id
+        keyWord:'',// 搜索关键字
+        postAuthor:null,// 作者
+        id:'',
+        tagName:''
+      },
+      hasMore:true
     }
   },
-  watch:{
-  },
+
   created(){
+    this.parameter=Object.assign(this.parameter,this.$route.query);
   },
-  mounted() {
+  async mounted() {
+    window.app = this;
     // eslint-disable-next-line
     //轮播
     this.slick()
+    // 上传数据统计
     this.getUploadResult()
+    // 热门风格
+    this.smallSlick()
+
+    // 获取列表数据
+    this.menuData=await util.getMenuData(this.parameter);
+
+    // 查询时页面直接定位到列表
     Object.keys(this.$route.query).length&&this.scrollToFixed()
+
+    this.getNewScrollData()
   },
+  
   methods: {
     // 切换瀑布流的模块大小
-    changeMasonrySize(model){
-      this.model=model;
-      this.$redrawVueMasonry();
+    changeMasonrySize(itemExtraClass){
+      this.itemExtraClass=itemExtraClass;
+      let _=this;
+      this.$nextTick(() => {
+       setTimeout(() => {
+          this.$redrawVueMasonry();
+         }, 300);
+      });
     },
      // swiper轮播
     slick() {
       let _ = this
-      this.slide = new Swiper('.swiper-container', {
+      this.slide = new Swiper('.slide .swiper-container', {
         autoplay : true,
         effect : 'fade',
         loop:true,
@@ -222,8 +263,8 @@ export default {
           }
         },
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
+          nextEl: '.slide .swiper-button-next',
+          prevEl: '.slide .swiper-button-prev',
         },
       })
     },
@@ -238,11 +279,42 @@ export default {
         this.mostUser=data.result.weekMostUser
       }
     },
-    // url含有查询参数，页面直接跳到列表处
+    // 如果url含有查询参数，页面定位到列表处
     scrollToFixed(){
       let fixedHeight=this.$refs.material&&this.$refs.material.offsetTop;
       let bodyBox=document.documentElement||document.body;
-      bodyBox.scrollTop=fixedHeight;
+      this.$nextTick(()=>{
+        bodyBox.scrollTop=fixedHeight;
+      })
+    },
+    // hot-stle
+    smallSlick(){
+      let _ = this
+      let small=new Swiper('.hot-style .swiper-container', {
+        autoplay : true,
+        slidesPerView :4,
+        slidesPerGroup : 1,
+        loop:true,
+        navigation: {
+          nextEl: '.hot-style .swiper-button-next',
+          prevEl: '.hot-style .swiper-button-prev',
+        },
+      })
+    },
+
+    // 滚动页面获取数据
+    getNewScrollData(){
+      let _=this
+      this.parameter.pageNum++
+      util.windowScrollBottom(()=>{
+        if(!_.hasMore){
+            return
+          }
+          util.getMenuData(_.parameter).then(data=>{
+            data.length<_.parameter.pageNum?_.hasMore=false:_.parameter.pageNum++
+            _.menuData=_.menuData.concat(data)
+          })
+      })
     }
   }
 }
@@ -250,116 +322,81 @@ export default {
 <style lang="scss">
 @import '~assets/scss/mixin';
 @import '~/assets/font/iconfont.css';
-
-
 .home {
   padding: 1px 0 0;
-  &.small{
-    .digital-panel{
-      width:1680px;
-    }
-    .module-filter{
-      width:1680px;
-    }
-    .waterfall-menu{
-      width:1680px;
-      .material-menu {
-        width:1680px;
-        .item {
-          width: 250px;
-        }
-      }
-    }
-  }
-  &.big{
-    .digital-panel{
-      width:1832px;
-    }
-    .module-filter{
-      width:1832px;
-    }
-    .waterfall-menu{
-      width:1832px;
-      .material-menu {
-        width:1832px;
-        .item {
-          width: 428px;
-        }
-      }
-    }
-  }
-  
-.slide {
-  position: relative;
-  border-bottom: 1px solid #85867c;
-  .swiper-container{
-      .swiper-slide {
-        transition:all 0.4s;
-        img {
-          display: block;
-          height: 590px;
-        }
-      }
-    .swiper-button-prev, .swiper-button-next{
-      transition:all 0.4s;
-      opacity: 0;
-      cursor: pointer;
-      width: 60px;
-      height: 60px;
-      border-radius:100%;
-      background-size: cover;
-      background-color:rgba(0,0,0,0.4);
-      background-size: 20px 20px;
-      &.swiper-button-disabled{
-        opacity: 0.2;
-      }
-    }
-    &:hover{
-      .swiper-button-prev, .swiper-button-next{
-        opacity: 1;
-        background-color:rgba(0,0,0,0.6);
-        &:hover{
-            background-color:rgba(0,0,0,0.8);
-        }
-      }
-      .swiper-button-prev{
-        left:20px;
-      }
-      .swiper-button-next{
-        right:20px;
-      }
-    }
-  }
-
-      .swiper-dots {
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 0;
-        z-index: 4;
-        .dot {
-          margin: 0 10px;
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          border: 2px solid #fff;
-          border-radius: 50%;
-          cursor: pointer;
-          &.active {
-            background: #fff;
+  .slide {
+    position: relative;
+    border-bottom: 1px solid #85867c;
+    .swiper-container{
+        .swiper-slide {
+          transition:all 0.4s;
+          overflow: hidden;
+          img {
+            margin: 0 auto;
+            display: block;
           }
         }
+      .swiper-button-prev, .swiper-button-next{
+        transition:all 0.4s;
+        opacity: 0;
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
+        border-radius:100%;
+        background-size: cover;
+        background-color:rgba(0,0,0,0.4);
+        background-size: 20px 20px;
+        &.swiper-button-disabled{
+          opacity: 0.2;
+        }
       }
-}
+      &:hover{
+        .swiper-button-prev, .swiper-button-next{
+          opacity: 1;
+          background-color:rgba(0,0,0,0.6);
+          &:hover{
+              background-color:rgba(0,0,0,0.8);
+          }
+        }
+        .swiper-button-prev{
+          left:20px;
+        }
+        .swiper-button-next{
+          right:20px;
+        }
+      }
+    }
+    .swiper-dots {
+          position: absolute;
+          bottom: 20px;
+          left: 0;
+          right: 0;
+          text-align: center;
+          font-size: 0;
+          z-index: 4;
+          .dot {
+            margin: 0 10px;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            &.active {
+              background: #fff;
+            }
+          }
+    }
+  }
   .digital-panel{
     width:1680px;
     margin: 0 auto;
     @include clearfix;
+    display: flex;
+    justify-content: space-between;
     .item{
-      float:left;
-      width:25%;
+     float:left;
+       width:25%;
       text-align: center;
       font-size: 16px;
       color: #333;
@@ -391,44 +428,72 @@ export default {
     }
   }
   .hot-style{
-    padding:40px 0 80px;  
+    position: relative;
+    padding:0 0 50px;  
     background: #fff;
-    .style-bg {
-      margin: 0;
-      line-height: 80px;
-      background: none;
-      color: #333;
-      font-size:24px;
+    .swiper-container{
+      width:1680px;
+      margin: 0 auto;
+    }
+    .swiper-button-prev,.swiper-button-next{
+      margin-top: -12px;
+      width:50px;
+      height:50px;
+      background-size:20px 20px;
+      border-radius: 100%;
+      background-color:#fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+      transition: all 0.3s;
+      opacity: 0.6;
+    }
+    .swiper-button-prev{
+        left:-60px;
+    }
+    .swiper-button-next{
+        right:-60px;
+    }
+    &:hover{
+      .swiper-button-prev,.swiper-button-next{
+        &:hover{
+            opacity: 1;
+        }
+      }
+      .swiper-button-prev{
+        left:20px;
+         
+      }
+      .swiper-button-next{
+        right:20px;
+      }
     }
   }
   .part-list {
     @include clearfix;
-    text-align: center;
     font-size: 0; 
     background: #fff;
     .item {
-      display: inline-block;
-      margin: 0 10px;
-      width: 183px;
-      border-radius: 8px;
-      cursor: pointer;
+      float:left;
+      width:25%;
+      padding: 8px 0;
       .item-inner {
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-        position: relative;
-        overflow: hidden;
-        transition:all 0.5s linear;
-        transform:rotateY(0deg);
-        background: #fff;
-        box-shadow: 0 8px 8px 0 #e0e6e7;
-        border-radius: 8px;
-        img {
+          position: relative;
           display: block;
-          width: 100%;
+          margin: 0 13px;
+          box-shadow: 0 0 6px rgba(4,0,0,0.3);
+          border-radius: 8px;
+          cursor: pointer;
           height: 168px;
+          overflow: hidden;
+        img {
+          position: absolute;
+          right:0;
+          top:0;
+          height: 100%;
+          transition: all 0.6s;
+          border-radius: 8px;
         }
         .item-name {
+          display: none;
           text-align: center;
           line-height: 40px;
           font-size: 20px;
@@ -436,75 +501,64 @@ export default {
           background: #fafbf8;
         }
         .desc {
+          position: absolute;
+          top:0;
+          left:0;
           width: 100%;
           height: 100%;
           z-index: 5;
-          padding: 40px 15px 0;
-          background: rgba(0, 0, 0, 0);
-          transition:all 0.3s linear;
-          position: absolute;
-          top: 0;
-          left: 0;
-          color: #fff;
-          transform:rotateY(180deg);
+          padding: 50px 0 0 36px;
           .subtitle {
             display: block;
-            font-size: 22px;
-            color: #fff;
+            font-size: 26px;
+            color: #000;
+            font-weight: bold;
             line-height: 36px;
-            transition:all 0.3s linear;
-            @include opacity(0);
           }
           .desc-content {
-            font-size: 14px;
-            color: #fff;
-            line-height: 30px;
+            font-size: 16px;
+            color: #000;
+            line-height: 40px;
             display: block;
-            text-align: center;
-            transition:all 0.3s linear;
-            @include opacity(0);
           }
         }
       }
-      &:hover,
-      &.active {
-        .item-inner {
-          transform:rotateY(180deg);
-          .desc {
-            background: rgba(0, 0, 0, 0.8);
-            .subtitle {
-              @include opacity(100);
-            }
-            .desc-content {
-              @include opacity(100);
-            }
-          }
+      &:hover,&.active {
+        img{
+          transform: scale(1.1);
         }
       }
     }
   } 
 }
-
 .module-title {
-  height: 94px; 
-  margin-top: 47px;
+  position: relative;
+  padding-top:30px;
+  height: 110px;
+  line-height: 80px;
+  font-weight: bold;
+  color: #333;
+  font-size:24px;
   text-align: center;
-  font-size: 20px;
-  color: rgb(204, 171, 171);
-  background: url(~assets/img/title-bg.png) no-repeat center 0;
-  &.color-bg {
-    line-height: 120px;
-    background-position: 52% -104px;
+  &:before,&:after{
+    position: absolute;
+    width:40px;
+    height:1px;
+    top:70px;
+    content: '';
+    background: #b5b5b5;
   }
-  &.material-bg {
-    line-height: 144px;
-    background-position: 54.5% -198px;
+  &:before{
+    left:44%;
   }
-}
+  &:after{
+    right:44%;
+  }
 
+}
 .module-filter {
   width:1680px;
-  margin: 38px auto 0;
+  margin:0 auto 0;
   padding: 0 15px;
   @include clearfix;
   .color-filter {
@@ -512,12 +566,11 @@ export default {
     li {
       float: left;
       margin-right: 12px;
-      height: 48px;
-      width: 88px;
-      border-radius: 10px;
+      height: 38px;
+      width: 38px;
+      border-radius: 100%;
       background: #fff;
       cursor: pointer;
-      border: 2px solid #e8eadf;
       transition:all 0.2s;
       &.colour {
         background: url(~assets/img/title-bg.png) no-repeat 0 -320px;
@@ -545,7 +598,7 @@ export default {
       }
       &:hover,
       &.active {
-        border-color: #f0f0e3;
+       
       }
     }
   }
@@ -554,15 +607,15 @@ export default {
     .tag-itme {
       float: left;
       padding: 0 16px;
-      height: 44px;
+      height: 38px;
+      font-size:16px;
+      color: #616161;
       margin-left: 12px;
-      border: 1px solid #afaeb2;
-      border-radius: 4px;
-      line-height: 42px;
+      line-height: 38px;
       text-align: center;
       cursor: pointer;
       &:hover,&.active{
-        background: #fff;
+       color:#3399ff;
       }
     }
     .shot-sizes{
@@ -643,16 +696,56 @@ export default {
     }
   }
 }
+.end-tip{
+  height: 60px;
+  line-height: 60px;
+  font-size:16px;
+  color: #999;
+  text-align: center;
+}
 
-
-@media screen and (max-width: 1620px) {
-  .material-menu{
-    width: 1350px;
+@media screen and (min-width: 1920px) {
+  .slide{
+    .swiper-container{
+      .swiper-slide {
+          img {
+            width:100%;
+            height:auto;
+          }
+      }
+    }
   }
 }
-@media screen and (max-width: 1350px) {
-  .material-menu{
-    width: 1080px;
-  }
+@media (min-width:1400px) and (max-width: 1680px) {
+  .home{
+    .digital-panel{
+      width: 1400px;
+    }
+    .module-filter{
+      width: 1400px;
+    }
+    .hot-style .swiper-container{
+      width: 1400px;
+      .item-inner .desc{
+        padding: 50px 0 0 14px;
+      }
+    }
+  } 
+}
+@media (min-width:1120px) and (max-width: 1399px) {
+ .home{
+    .digital-panel{
+      width: 1120px;
+    }
+    .module-filter{
+      width: 1120px;
+    }
+    .hot-style .swiper-container{
+      width: 1120px;
+      .item-inner .desc{
+        padding: 50px 0 0 10px;
+      }
+    }
+  } 
 }
 </style>

@@ -12,7 +12,7 @@ const api = {
     upload:`/${prefix}/report/batchInsert.do`,
     index:{
         list:`/${prefix}/post/list.do`,
-        category:`/${prefix}/api/category/list.do`,
+        category:`/${prefix}/category/list.do`,
         count:`${prefix}/report/queryPostCount.do`
     },
     detail:{

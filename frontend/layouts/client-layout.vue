@@ -3,8 +3,7 @@
       <header class="header">
           <a href="/" target="_blank" class="header-logo"></a>
           <div v-if="userInfo.username" class="user-name">
-            <a :href="'/?postAuthor='+ userInfo.userid">{{userInfo.username}}</a>
-            <span @click="loginOut">退出</span>
+            <a :href="'/?postAuthor='+ userInfo.userid">{{userInfo.username}}</a>&nbsp;<span @click="loginOut">退出</span>
           </div>
           <div v-else class="header-login">
             <nuxt-link to="/login">登录</nuxt-link>/<nuxt-link to="/login">注册</nuxt-link>
@@ -26,10 +25,12 @@
             </template>
           </ul>
       </header>
-      <div class="search" :class="{long:longSearchBox}">
+      <!-- :class="{long:longSearchBox}" -->
+      <div class="search" >
         <div class="search-box">
-          <a v-if="searchWord" href="/" class="close">X</a>
-          <input v-model="searchWord" type="text" placeholder="搜索你喜欢的"  @blur="longSearchBox=false" @focus="longSearchBox=true"  @keyup.enter="search()">
+          <a v-if="searchWord" href="/" class="close"></a>
+          <!-- @blur="longSearchBox=false" @focus="longSearchBox=true" -->
+          <input v-model="searchWord" type="text" placeholder="搜索你喜欢的" @keyup.enter="search()">
           <button class="btn" @click="search()">
             <i class="iconfont iconsousuo"></i>
           </button>
@@ -59,7 +60,7 @@ export default {
       categoryListLength:0,
 
       fixedTop:false,// 搜索框固定在顶部
-      longSearchBox:false,// 搜索框固定在顶部，鼠标聚焦，搜索框变长
+      // longSearchBox:false,// 搜索框固定在顶部，鼠标聚焦，搜索框变长
       searchWord:'',// 检索关键字
       hotWords:[
         {
@@ -104,9 +105,9 @@ export default {
   },
   
   watch:{
-    $route(){
-      this.searchWord=this.$route.query.keyWord||''
-    }
+    // $route(){
+    //   this.searchWord=this.$route.query.keyWord||''
+    // }
   },
   created(){
     this.searchWord=this.$route.query.keyWord||''
@@ -123,8 +124,8 @@ export default {
   },
   methods: {
     getUserInfo(){
-        this.userName=localStorage.getItem(constants.user.usernameKey)
-        this.userId=localStorage.getItem(constants.user.useridKey)
+        this.userInfo.username=localStorage.getItem(constants.user.usernameKey)
+        this.userInfo.userid=localStorage.getItem(constants.user.useridKey)
     },
 
     loginOut(){
@@ -139,7 +140,7 @@ export default {
 
     // 搜索
     search(){
-      this.searchWord&& (window.location.href='/?keyWord='+this.searchWord)
+      this.searchWord && (window.location.href='/?keyWord='+this.searchWord)
     },
 
     // 获取分类信息
@@ -176,26 +177,42 @@ export default {
          background: #303030;
       }
       .search{
-        width:100px;
-      //  left:430px;
-       // right:auto;
+        width:44px;
         top: 8px;
+        left:auto;
+        right:130px;
+        transition:width 0.4s;
         .search-box{
           width:100%;
-          input{
-            padding-left: 30px;
-          }
+          background: none;
           .close{
-            display: block;
+            opacity: 0;
+          }
+          input{
+            display: none;
           }
         }
         .search-menu{
           display: none;
         }
+        &:hover{
+          &{
+            width:300px;
+            .search-box{
+              background: #fff;
+              input{
+                display: block;
+              }
+              .close{
+                opacity: 1;
+              }
+            }
+          }
+        }
         &.long{
-          width:400px;
+          width:542px;
           .search-box{
-            width:360px;
+            background: #ffff;
           }
         }
       }
@@ -220,16 +237,20 @@ export default {
   }
   .header-login {
     float: right;
-    width: 103px;
-    height: 40px;
-    line-height: 38px;
+    width: 90px;
+    margin-top: 4px;
+    height: 30px;
+    line-height: 28px;
     text-align: center;
     border: 1px solid #fff;
     border-radius: 4px;
-    font-size: 16px;
     color: #fffefe;
     a {
+          font-size: 16px;
       color: #fffefe;
+      &:hover{
+        color:#4499ff;
+      }
     }
     .login-out{
       font-size: 14px;
@@ -237,13 +258,32 @@ export default {
     }
   }
   .user-name{
+    position: relative;
+    width: 90px;
     float:right;
-    height: 44px;
-    line-height: 42px;
+    margin-top: 4px;
+    height: 30px;
+    line-height: 28px;
     font-size: 16px;
-     color: #fff;
+    color: #fff;
+    text-align: center;
+    &:before{
+      position: absolute;
+      left:0;
+      top:7px;
+      height:16px;
+      width:1px;
+      background: #fff;
+      content: '';
+    }
     a{
-     color: #fff;
+      color: #fff;
+      &:hover{
+        color: #4499ff;
+      }
+    }
+    span{
+
     }
   }
   .backstage{
@@ -261,7 +301,7 @@ export default {
   }
   .header-nav {
     float: right;
-    padding-right: 20px;
+    padding-right: 60px;
     > li {
       position: relative;
       float: left;
@@ -366,6 +406,8 @@ export default {
       z-index: 2;
       color:#969696;
       cursor: pointer;
+      background: url(~assets/img/guanbihover.svg) no-repeat center center;
+      background-size:13px 13px;
     }
   }
   .search-menu {
@@ -386,7 +428,6 @@ export default {
       }
     }
   }
-  
 }
 .move-enter-active {
   transition: all 0.3s ease;

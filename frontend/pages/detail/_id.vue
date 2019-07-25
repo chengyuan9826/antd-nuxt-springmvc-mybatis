@@ -3,7 +3,7 @@
         <div class="detail-content">
             <h3 class="title">{{detailContent.post_title}}</h3>
             <div class="attr">
-                <nuxt-link :to="{name:'index',query:{author:detailContent.post_author}}" class="author">作者：{{detailContent.display_name}}</nuxt-link>
+                <nuxt-link :to="{name:'index',query:{postAuthor:detailContent.post_author}}" class="author">作者：{{detailContent.display_name}}</nuxt-link>
                 <span class="time">发表时间：{{detailContent.post_date}}</span>
             </div>
             <div class="content" v-html="detailContent.post_content"></div>
@@ -13,27 +13,41 @@
             </div>
         </div>
         <div class="page-nav">
-            <a class="prev" :href="'/detail?id='+1"><i class="iconfont icon"></i>上一篇：邂逅冬季专题页设计</a>
-            <a class="next" :href="'/detail?id='+2">下一篇：邂逅冬季专题页设计<i class="iconfont icon"></i></a>
+            <a class="prev" :href="'/detail?id='+prevPost.id"><i class="iconfont icon"></i>上一篇：{{prevPost.post_title}}</a>
+            <a class="next" :href="'/detail?id='+nextPost.id">下一篇：{{nextPost.post_title}}<i class="iconfont icon"></i></a>
         </div>
         <h5 class="recommend-title">相关推荐</h5>
-        <waterfall></waterfall>
+        <post-list :post-list="menuData"></post-list>
     </div>
 </template>
 <script>
 import api from '~/assets/js/common/api'
-import waterfall from '~/components/Waterfall'
+import util from '~/assets/js/common/util'
+import PostList from '~/components/PostList'
 export default {
     layout:'client-layout',
     components:{
-        waterfall
+        PostList
     },
     data(){
         return{
             id:-1,
             errorMsg:'',
             detailContent:'',
-            tagList:[]
+            tagList:[],
+            menuData:[],
+            parameter:{
+                pageNum: 1,
+                pageSize:20,
+                termId:null,// 类别的id
+                keyWord:'',// 搜索关键字
+                postAuthor:null,// 作者
+                id:'',
+                tagName:''
+            },
+            hasMore:true,
+            nextPost:{},
+            prevPost:{}
         }
     },
     asyncData(context){
@@ -41,34 +55,54 @@ export default {
     },
     created(){
         this.$parent.$parent.$data.fixedTop = true;
-        this.id=this.$route.query.id;
+        this.id=parseInt(this.$route.query.id);
+        this.parameter.id=this.id
     },
-    mounted(){
+    async mounted(){
         // 获取文章
         this.getDetailContent()
 
         // 获取文章上一篇和下一篇
         this.getPostIdSiblings()
+
+        // 获取列表数据
+        this.menuData=await util.getMenuData(this.parameter);
+
+        this.getNewScrollData()
     },
     methods:{
        async getDetailContent(){
            let {data}=await this.$axios.post(api.detail.article,{postId:this.id})
             if(data.state===0){
                this.detailContent=data.post
-               this.tagList=data.post.tag.split(',')
+               this.tagList=data.post.tag.split(/,|，/).filter((val)=>val && val.trim())
             }
             else{
                this.errorMsg = data.msg
             }
        },
        async getPostIdSiblings(){
-           let {data}=await this.$axios.post(api.detail.siblings,{postId:this.id})
-           console.log(this.id);
+           let {data}=await this.$axios.get(api.detail.siblings,{
+               params:{postId:this.id}
+           })
            if(data.state===0){
-               
+               this.nextPost=data.nextPost
+               this.prevPost=data.prevPost
            };
+       },
+       getNewScrollData(){
+            let _=this
+            this.parameter.pageNum++
+            util.windowScrollBottom(()=>{
+                if(!_.hasMore){
+                    return
+                }
+                util.getMenuData(_.parameter).then(data=>{
+                    data.length<_.parameter.pageNum?_.hasMore=false:_.parameter.pageNum++
+                    _.menuData=_.menuData.concat(data)
+                })
+            })
        }
-
     }
 }
 </script>
@@ -79,8 +113,7 @@ export default {
        width:1000px;
        margin: 0 auto;
         .title{
-            height: 80px;
-            line-height: 80px;
+            padding: 12px 0;
             font-size: 36px;
             font-weight: bold;
             text-align: left;

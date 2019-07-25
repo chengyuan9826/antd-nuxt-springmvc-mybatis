@@ -61,7 +61,7 @@ module.exports = {
     '/api/': {
       target: 'http://10.1.14.81:8080',
       pathRewrite: {
-        '^/api': ''
+        '^/api': '/api'
       }
     }
   },

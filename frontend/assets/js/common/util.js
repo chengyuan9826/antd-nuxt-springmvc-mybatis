@@ -1,11 +1,14 @@
 import constants from '~/assets/js/common/constants';
-
+import api from '~/assets/js/common/api'
+import { message } from 'ant-design-vue'
+import axios from 'axios'
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 const hasOwn = function (obj, key) {
   return hasOwnProperty.call(obj, key);
 };
 
+let isLoading=false
 const util = {
   // 对Date的扩展，将 Date 转化为指定格式的String
   // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -201,9 +204,34 @@ const util = {
     return text;
   },
 
-  /**
-   * 获取列表数据
-   * @param object parameter
-   */
+  // 获取列表数据
+  async getMenuData(parameter) {
+    if(isLoading){
+      return
+    }
+    message.loading('loading', 0)
+    isLoading=true
+    let { data } = await axios.post(api.index.list, parameter)
+    if (data.state === 0) {
+      // 请求成功,关闭loading
+      message.destroy()
+      isLoading=false
+      return data.list;
+    }
+    else {
+ //     return data.msg
+    }
+  },
+
+  windowScrollBottom(callback){
+    window.onscroll=function(){
+      let scrollTop = document.documentElement.scrollTop;
+      let documentHeight =document.body.scrollHeight;
+      let windowHeight = window.innerHeight;
+      if(scrollTop + windowHeight >= documentHeight-100){
+        callback&&callback();
+      }
+    }
+  }
 };
 export default util;
