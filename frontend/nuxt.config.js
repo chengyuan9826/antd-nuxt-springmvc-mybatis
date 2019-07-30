@@ -35,7 +35,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/antd-ui', '~/plugins/axios',{ src: '~/plugins/vue-masonry', ssr: false }],
+  plugins: ['@/plugins/antd-ui', '~/plugins/axios',{ src: '~/plugins/vue-masonry', ssr: false }, {src: '~plugins/echarts', ssr: false}],
 
   /*
    ** Nuxt.js modules
@@ -80,6 +80,7 @@ module.exports = {
         javascriptEnabled: true
       }
     },
+    transpile: ['vue-echarts', 'resize-detector'],
     // loaders: [
     //   {
     //     test:/\.(png|jpe?g|gif|svg)$/,

@@ -2,8 +2,10 @@
     <div class="home" :class="[model]">
       <div class="slide">
            <div class="swiper-container">
-              <div class="swiper-wrapper">
-                <div v-for="item in slideData" :key="item.id" class="swiper-slide"><img :src="item.src"/></div> 
+              <div ref="content" class="swiper-wrapper">
+                <div v-for="item in slideData" :key="item.id" class="swiper-slide">
+                  <img :src="item.src"/>
+                </div>
               </div>
                 <div class="swiper-button-prev swiper-button-white"></div>
                 <div class="swiper-button-next swiper-button-white"></div>
@@ -175,7 +177,7 @@ export default {
       mostUser:{},
       errorMsg:'',
       currentSlideIndex: 0,// 轮播 当前index
-      slide:null,
+      slide: null,
       slideData:[
         {
           id:1,
@@ -185,14 +187,16 @@ export default {
           id:2,
           src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-2.jpg",
         },
-                {
+        {
           id:3,
           src:"http://design.zxxk.com/wp-content/uploads/2019/07/banner-3.jpg",
         }
       ],
+      // canvas元素
+      canvas: null,
+      // 外层content
+      container: null
     }
-  },
-  watch:{
   },
   created(){
   },
@@ -247,11 +251,18 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~assets/scss/mixin';
 @import '~/assets/font/iconfont.css';
 
-
+.canvas {
+    width: 90%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 1;
+}
 .home {
   padding: 1px 0 0;
   &.small{
@@ -297,7 +308,10 @@ export default {
         transition:all 0.4s;
         img {
           display: block;
+          width: 100%;
           height: 590px;
+          position: relative;
+          z-index: 1;
         }
       }
     .swiper-button-prev, .swiper-button-next{
