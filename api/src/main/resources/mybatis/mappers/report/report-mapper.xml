@@ -145,11 +145,11 @@
         and m1.meta_key='_thumbnail_id'
         and m1.meta_value = m2.post_id
         and m2.meta_key='_wp_attached_file'
+        <if test="tagName != null">
+            and d.`name` like concat('%',#{tagName},'%') -- 标签查询
+        </if>
         <if test="keyWord != null">
-            and
-            (d.`name` like concat('%',#{keyWord},'%') -- 标签查询
-            or a.post_title like concat('%',#{keyWord},'%') -- 标题查询
-            )
+            and a.post_title like concat('%',#{keyWord},'%') -- 标题查询
         </if>
         <if test="postAuthor != null">
             and a.post_author = #{postAuthor} -- 作者ID精确查询
@@ -213,12 +213,12 @@
     </select>
 
     <!--查询一个id前面的ID-->
-    <select id="selectPrevId" resultType="java.lang.Integer">
-        select id from wp_posts a where a.id <![CDATA[<]]> #{0} and a.post_status ='publish' order by id desc limit 1
+    <select id="selectPrevPost" resultMap="PostMap">
+        select * from wp_posts a where a.id <![CDATA[<]]> #{0} and a.post_status ='publish' order by id desc limit 1
     </select>
     <!--查询一个id后面的ID-->
-    <select id="selectNextId" resultType="java.lang.Integer">
-        select id from wp_posts a where a.id <![CDATA[>]]> #{0} and a.post_status ='publish' order by id asc limit 1
+    <select id="selectNextPost" resultMap="PostMap">
+        select * from wp_posts a where a.id <![CDATA[>]]> #{0} and a.post_status ='publish' order by id asc limit 1
     </select>
 
     <!--查询文章各种数量统计-->

@@ -2,20 +2,19 @@
   <div class="login-wrap clearfix">
     <earth></earth>
     <div class="login">
-      <img src="../assets/img/logo.png" alt="logo">
-      <input v-model="username" type="text" placeholder="账号" class="account">
-      <input v-model="password" type="password" placeholder="密码" class="password">
+      <img src="../assets/img/logo.png" alt="logo" />
+      <input v-model="username" type="text" placeholder="账号" class="account" />
+      <input v-model="password" type="password" placeholder="密码" class="password" @keyup.13="login"/>
       <div class="remember">
         <div class="remember-choose">
-           <a-checkbox class="checkbox">记住密码</a-checkbox>
+          <a-checkbox class="checkbox">记住密码</a-checkbox>
         </div>
-        <a href="" class="forget">忘记密码？</a>
+        <!-- <a href class="forget">忘记密码？</a> -->
       </div>
-      <input type="button" class="btn" value="登录" @click="login">
+      <div class="field mt10 sm-text error-tips">{{ errorMsg }}</div>
+      <input type="button" class="btn" value="登录" @click="login" />
     </div>
-    <footer class="login-footer">
-      北京凤凰学易科技有限公司
-    </footer>
+    <footer class="login-footer">北京凤凰学易科技有限公司</footer>
     <!-- <div class="footer"></div> -->
     <!-- <div class="circle"></div> -->
   </div>
@@ -57,7 +56,7 @@ export default {
       const { data } = await this.$axios.post(api.user.info)
       this.errorMsg = data
     }
-  },
+  }
 }
 </script>
 
@@ -83,7 +82,9 @@ export default {
       width: 70%;
       margin-bottom: 3.7vh;
     }
-    .account, .password, .btn {
+    .account,
+    .password,
+    .btn {
       width: 100%;
       height: 48px;
       border-radius: 24px;
@@ -96,12 +97,12 @@ export default {
       font-size: 14px;
       color: #fff;
       &:focus {
-        border: 1px solid #fff; 
+        border: 1px solid #fff;
       }
       &::-webkit-input-placeholder,
       &:-moz-placeholder,
       &:-ms-input-placeholder {
-        color: #765A9B;
+        color: #765a9b;
       }
     }
     .password {
@@ -125,7 +126,7 @@ export default {
       height: 48px;
       margin-bottom: 2.78vh;
       &::after {
-        content: "";
+        content: '';
         display: block;
         height: 0;
         clear: both;
