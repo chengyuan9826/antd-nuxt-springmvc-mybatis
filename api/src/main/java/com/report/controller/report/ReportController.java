@@ -119,7 +119,7 @@ public class ReportController {
         Date time = new Date();
         //timeGmt时间要小一些，不然的话文章审核的时候没有发布按钮，只有计划按钮
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, -1);
+        c.add(Calendar.HOUR_OF_DAY, -1);
         Date timeGmt = c.getTime();
         int postId = 0;
         int attachmentId = 0;
@@ -282,7 +282,7 @@ public class ReportController {
         Date time = new Date();
         //timeGmt时间要小一些，不然的话文章审核的时候没有发布按钮，只有计划按钮
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, -1);
+        c.add(Calendar.HOUR_OF_DAY, -1);
         Date timeGmt = c.getTime();
         int postId = 0;
         int attachmentId = 0;

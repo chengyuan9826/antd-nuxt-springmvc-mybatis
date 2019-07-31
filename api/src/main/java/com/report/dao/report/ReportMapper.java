@@ -88,20 +88,20 @@ public interface ReportMapper {
     List<Category> queryCategoryList();
 
     /**
-     * 查询一个文章ID前面的一个ID
+     * 查询一个文章ID前面的一个文章
      *
      * @param id
      * @return
      */
-    Integer selectPrevId(int id);
+    Post selectPrevPost(int id);
 
     /**
-     * 查询一个文章ID后面的一个ID
+     * 查询一个文章ID后面的一个文章
      *
      * @param id
      * @return
      */
-    Integer selectNextId(int id);
+    Post selectNextPost(int id);
 
     /**
      * 查询文章数量，周数量，指定日期之间的数量等
