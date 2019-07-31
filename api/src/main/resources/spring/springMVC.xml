@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--看到下面的beans这个元素标签没有，必须有标签的声明 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context  
+        http://www.springframework.org/schema/context/spring-context.xsd  
+        http://www.springframework.org/schema/mvc  
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<import resource="spring.xml" />
+	<!-- 对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com.report.controller,com.report.serviceImpl" />
+	<context:annotation-config />
+	<mvc:annotation-driven />
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+	<!-- 视图处理器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/page/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 拦截器配置 -->
+	<mvc:interceptors>
+		<!-- 未登录用户跳转到登录页面 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*.do" />
+			<mvc:exclude-mapping path="/user/login.do" />
+			<bean class="com.report.common.intercepter.LoginIntercepor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- 用默认servlet响应静态文件,其实在所有请求都加.do后缀的时候，下面配置是多余的 -->
+	<mvc:default-servlet-handler />
+	
+	      <!-- 上传文件的设置 -->
+     <bean id="multipartResolver"  
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <!-- set the max upload size100MB -->  
+        <property name="maxUploadSize">  
+            <value>104857600</value>  
+        </property>  
+        <property name="maxInMemorySize">  
+            <value>4096</value>  
+        </property>  
+    </bean>  
+</beans> 

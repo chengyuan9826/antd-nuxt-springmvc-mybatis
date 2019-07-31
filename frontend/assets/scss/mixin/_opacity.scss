@@ -1,0 +1,5 @@
+@charset "UTF-8";
+@mixin opacity($attr){
+  filter:alpha(opacity=$attr);
+  opacity: $attr/100;
+}
