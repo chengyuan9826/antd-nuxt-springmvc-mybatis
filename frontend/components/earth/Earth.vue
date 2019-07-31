@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import earth from '~/assets/img/world2.jpg'
+import earth from '~/assets/img/world.jpg'
 import stars from '~/assets/img/star.png'
 
 export default {
@@ -23,7 +23,7 @@ export default {
           },
           light: {
             ambient: {
-              intensity:1.1
+              intensity: 1.5
             },
             main: {
               intensity: 0.6

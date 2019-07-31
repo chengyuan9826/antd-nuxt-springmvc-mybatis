@@ -16,7 +16,7 @@
     </div>
     <footer class="login-footer">北京凤凰学易科技有限公司</footer>
     <!-- <div class="footer"></div> -->
-    <div class="circle"></div>
+    <!-- <div class="circle"></div> -->
   </div>
 </template>
 
@@ -24,7 +24,6 @@
 import api from '~/assets/js/common/api'
 import constants from '~/assets/js/common/constants'
 import Earth from '~/components/earth/Earth'
-// import Earth from '~/components/three/Earth'
 export default {
   layout: 'login',
   components: {
