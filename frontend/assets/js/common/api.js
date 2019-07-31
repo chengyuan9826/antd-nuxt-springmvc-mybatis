@@ -18,7 +18,7 @@ const api = {
   },
   index: {
     list: `/${prefix}/post/list.do`,
-    category: `/${prefix}/api/category/list.do`,
+    category: `/${prefix}/category/list.do`,
     // 查询首页显示的四个统计数量
     count: `${prefix}/report/queryPostCount.do`
   },

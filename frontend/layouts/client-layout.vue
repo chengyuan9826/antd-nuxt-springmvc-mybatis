@@ -1,7 +1,7 @@
 <template>
   <div class="page" :class="{fixedtop:fixedTop}">
     <header class="header">
-      <a href="/" target="_blank" class="header-logo"></a>
+      <a href="/" class="header-logo"></a>
       <div v-if="userInfo.userName" class="user-name">
         <!-- <a :href="'/?postAuthor='+ userInfo.userId">{{userInfo.userName}}</a> -->
         {{userInfo.userName}}
@@ -119,8 +119,8 @@ export default {
         }
       ],
       userInfo: {
-        username: '', // 用户名
-        userid: 0 // 用户id
+        userName: '', // 用户名
+        userId: 0 // 用户id
       },
       searchKey: ''
     }
@@ -143,13 +143,15 @@ export default {
   },
   methods: {
     getUserInfo() {
-      this.userInfo.username = localStorage.getItem(constants.user.usernameKey)
-      this.userInfo.userid = localStorage.getItem(constants.user.useridKey)
+      this.userInfo.userName = localStorage.getItem(constants.user.usernameKey)
+      this.userInfo.userId = localStorage.getItem(constants.user.useridKey)
     },
 
     loginOut() {
-      localStorage.setItem(constants.user.usernameKey, '')
-      this.userInfo.username = ''
+      this.$axios.post(api.user.logout).then(res => {
+        localStorage.setItem(constants.user.usernameKey, '')
+        this.userInfo.userName = ''
+      })
     },
 
     // 下拉菜单显示
@@ -319,7 +321,7 @@ export default {
     }
     span {
     }
-    .logout-btn{
+    .logout-btn {
       cursor: pointer;
     }
   }
