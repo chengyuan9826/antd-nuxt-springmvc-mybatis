@@ -1,89 +1,36 @@
 <template>
   <div class="login-wrap clearfix">
-    <div class="login-center-box">
-      <img src="~/assets/img/login-bg.png" alt=""/>
-      <div class="right-box">
-        <h3 class="title">
-          设计中心AI平台报表系统
-        </h3>
-        <div class="login-form-wrap">
-          <div class="form-box">
-            <div class="field">
-              <a-input
-                v-model="username"
-                placeholder="用户名"
-                @keyup.13="login"
-              >
-                <a-icon
-                  slot="prefix"
-                  type="user"
-                />
-              </a-input>
-            </div>
-            <div class="field mt30">
-              <a-input
-                v-model="password"
-                type="password"
-                placeholder="密码"
-                @keyup.13="login"
-              >
-                <a-icon
-                  slot="prefix"
-                  type="lock"
-                />
-              </a-input>
-            </div>
-            <div class="field mt10 sm-text">
-              <input
-                id="rem-pwd"
-                type="checkbox"
-              />
-              <label for="rem-pwd">记住密码</label>
-            </div>
-            <div class="field mt10 sm-text error-tips">
-              {{ errorMsg }}
-            </div>
-            <div
-              class="field mt30"
-              style="margin-top:21px;"
-            >
-              <a-button
-                type="primary"
-                block
-                @click="login"
-              >
-                登录
-              </a-button>
-            </div>
-            <div
-              id="info-box"
-              class="field mt30"
-              style="margin-top:21px;color:red;font-size:14px;"
-            />
-            <div class="field mt30">
-              <span
-                class="dotted-line"
-                style="width: 100%"
-              />
-            </div>
-          </div>
+    <earth></earth>
+    <div class="login">
+      <img src="../assets/img/logo.png" alt="logo">
+      <input v-model="username" type="text" placeholder="账号" class="account">
+      <input v-model="password" type="password" placeholder="密码" class="password">
+      <div class="remember">
+        <div class="remember-choose">
+           <a-checkbox class="checkbox">记住密码</a-checkbox>
         </div>
+        <a href="" class="forget">忘记密码？</a>
       </div>
-      <div class="clear" />
+      <input type="button" class="btn" value="登录" @click="login">
     </div>
-
     <footer class="login-footer">
       北京凤凰学易科技有限公司
     </footer>
+    <!-- <div class="footer"></div> -->
+    <div class="circle"></div>
   </div>
 </template>
 
 <script>
 import api from '~/assets/js/common/api'
 import constants from '~/assets/js/common/constants'
+import Earth from '~/components/earth/Earth'
+// import Earth from '~/components/three/Earth'
 export default {
   layout: 'login',
-  components: {},
+  components: {
+    Earth
+  },
   data() {
     return {
       username: '',
@@ -111,7 +58,7 @@ export default {
       const { data } = await this.$axios.post(api.user.info)
       this.errorMsg = data
     }
-  }
+  },
 }
 </script>
 
@@ -124,68 +71,113 @@ export default {
   top: 0;
   bottom: 0;
   margin: 0 auto;
-  background: #22a587;
-}
-.login-wrap .title {
-  font-size: 28px;
-  color: #fff;
-  text-align: center;
-}
-.login-wrap .login-form-wrap {
-  margin-top: 20px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-  width: 378px;
-  height: 358px;
-  overflow: hidden;
-}
-.login-wrap .form-box {
-  margin: 54px auto;
-  width: 80%;
-}
-.login-wrap img {
-  width: 430px;
-  float: left;
-}
-.login-wrap .right-box {
-  float: left;
-  margin-left: 290px;
-}
-
-.login-bt {
-  color: #fff;
-  width: 100%;
-  height: 46px;
-  box-sizing: border-box;
-  background: #ff871e;
-  border-radius: 5px;
-  display: inline-block;
-  text-align: center;
-  font-size: 16px;
-  line-height: 46px;
-  cursor: pointer;
-}
-
-.dotted-line {
-  border-bottom: 1px dotted #fff;
-  display: inline-block;
-}
-
-.login-footer {
-  text-align: center;
-  color: #fff;
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  width: 100%;
-}
-
-.login-center-box {
-  width: 1200px;
-  margin: 0 auto;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  .login {
+    position: absolute;
+    width: 22vw;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    img {
+      width: 70%;
+      margin-bottom: 3.7vh;
+    }
+    .account, .password, .btn {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      outline: none;
+      border: 1px solid rgba($color: #fff, $alpha: 0.4);
+      padding-left: 20px;
+      box-sizing: border-box;
+      margin-bottom: 3.7vh;
+      background: rgba($color: #fff, $alpha: 0.1);
+      font-size: 14px;
+      color: #fff;
+      &:focus {
+        border: 1px solid #fff; 
+      }
+      &::-webkit-input-placeholder,
+      &:-moz-placeholder,
+      &:-ms-input-placeholder {
+        color: #765A9B;
+      }
+    }
+    .password {
+      margin-bottom: 1.85vh;
+    }
+    .btn {
+      padding-left: 0;
+      text-align: center;
+      color: #fff;
+      transition: all 0.3s linear;
+      border: 1px solid rgba($color: #fff, $alpha: 1);
+      background: rgba($color: #000000, $alpha: 0.2);
+      &:hover {
+        background: rgba($color: #000000, $alpha: 0.4);
+        color: #fff;
+        border: 1px solid #fff;
+      }
+    }
+    .remember {
+      width: 100%;
+      height: 48px;
+      margin-bottom: 2.78vh;
+      &::after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+      }
+      .remember-choose {
+        float: left;
+        line-height: 48px;
+        text-align: left;
+        padding-left: 5px;
+        .checkbox {
+          color: rgb(177, 150, 212);
+        }
+      }
+      .forget {
+        float: right;
+        line-height: 48px;
+        text-align: right;
+        color: rgb(177, 150, 212);
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+  .login-footer {
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    bottom: 50px;
+  }
+  // .footer {
+  //   position: absolute;
+  //   background: url('../assets/img/company.png') no-repeat;
+  //   background-size: 100% 100%;
+  //   width: 20.57vw;
+  //   height: 3.8vw;
+  //   bottom: 14vh;
+  //   left: 50%;
+  //   transform: translate(-50%, 0%);
+  // }
+  .circle {
+    position: absolute;
+    background: url('../assets/img/circle.png') no-repeat;
+    background-size: 100% 100%;
+    width: 40vw;
+    height: 40vw;
+    bottom: 10.3vh;
+    left: 50%;
+    transform: translate(-50%, 0%);
+  }
 }
 </style>

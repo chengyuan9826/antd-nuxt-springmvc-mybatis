@@ -4,7 +4,7 @@ import report from '~/assets/js/common/app';
 export default function ({ app, redirect }) {
   const $axios = app.$axios;
   $axios.defaults.timeout = 50000;
-  // $axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  $axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
   $axios.onRequest(config => {
     env.isDev && console.debug('$axios request:', config);
   });
