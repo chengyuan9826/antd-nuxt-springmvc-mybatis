@@ -1,7 +1,7 @@
 <template>
   <div class="page" :class="{fixedtop:fixedTop}">
     <header class="header">
-      <a href="/" target="_blank" class="header-logo"></a>
+      <a href="/" class="header-logo"></a>
       <div v-if="userInfo.userName" class="user-name">
         <!-- <a :href="'/?postAuthor='+ userInfo.userId">{{userInfo.userName}}</a> -->
         {{userInfo.userName}}
