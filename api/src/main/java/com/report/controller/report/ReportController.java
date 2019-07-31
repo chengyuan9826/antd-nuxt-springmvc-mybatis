@@ -1,6 +1,7 @@
 package com.report.controller.report;
 
 import com.report.common.constants.Constants;
+import com.report.common.model.Result;
 import com.report.common.util.DateUtil;
 import com.report.common.util.FileUtil;
 import com.report.common.util.ImageUtil;
@@ -95,7 +96,7 @@ public class ReportController {
         Map<String, Object> result = new HashMap<String, Object>();
         String msg = null;
         int state = 0;
-        if (folderName == null) {
+        if (folderName == null || folderName == "") {
             result.put("state", -1);
             result.put("msg", "folderName不能为空");
             return result;
@@ -118,7 +119,7 @@ public class ReportController {
         Date time = new Date();
         //timeGmt时间要小一些，不然的话文章审核的时候没有发布按钮，只有计划按钮
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, -1);
+        c.add(Calendar.HOUR_OF_DAY, -1);
         Date timeGmt = c.getTime();
         int postId = 0;
         int attachmentId = 0;
@@ -127,6 +128,8 @@ public class ReportController {
         int count = 0;
         int errorCount= 0;
         UUID uuid = null;
+        //失败的列表
+        List<String> errList = new ArrayList<String>();
         for (int i = 0; i < lists.length; i++) {
             File userRootFolder = lists[i];
             File[] userRootFolderFiles = userRootFolder.listFiles(filter);
@@ -166,6 +169,7 @@ public class ReportController {
                             } catch (ImageErrorException e) {
                                 errorCount++;
                                 log.error(e.getMessage());
+                                errList.add(newFile.getAbsolutePath());
                                 continue;
                             }
                             imgYearMonthName = FileUtil.getYearMonthName(userDocument);
@@ -222,6 +226,7 @@ public class ReportController {
         }
         log.debug("所有文章插入成功，");
         result.put("state", 0);
+        result.put("errorList",errList);
         result.put("msg", "批量插入成功，成功条数：" + count + "，失败条数：" + errorCount + "。具体失败信息请查看后端日志。");
         return result;
     }
@@ -241,7 +246,7 @@ public class ReportController {
     public Map<String, Object> batchInsertImages(HttpServletRequest request, String folderName, String slug, HttpSession session) throws UnsupportedEncodingException {
         //返回的信息
         Map<String, Object> result = new HashMap<String, Object>();
-        if (folderName == null) {
+        if (folderName == null || folderName == "") {
             result.put("state", -1);
             result.put("msg", "folderName不能为空");
             return result;
@@ -260,6 +265,14 @@ public class ReportController {
             result.put("msg", "文件夹不存在: " + Constants.imagesRootFolder + "/" + folderName);
             return result;
         }
+
+        //给文章关联分类
+        int termTaxonomyId = queryTermIdBySlug(slug);
+        if (termTaxonomyId == 0) {
+            result.put("state", -1);
+            result.put("msg", "传入的slug有误，请检查");
+            return result;
+        }
         File[] lists = folder.listFiles(filter);
         String documentUrl = null;
         String imgUrl = null;
@@ -269,7 +282,7 @@ public class ReportController {
         Date time = new Date();
         //timeGmt时间要小一些，不然的话文章审核的时候没有发布按钮，只有计划按钮
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, -1);
+        c.add(Calendar.HOUR_OF_DAY, -1);
         Date timeGmt = c.getTime();
         int postId = 0;
         int attachmentId = 0;
@@ -360,13 +373,7 @@ public class ReportController {
                 reportMapper.insertPostMeta(meta3);
                 log.debug("图片和文章id关联成功");
 
-                //给文章关联分类
-                int termTaxonomyId = queryTermIdBySlug(slug);
-                if (termTaxonomyId == 0) {
-                    result.put("state", -1);
-                    result.put("msg", "传入的slug有误，请检查");
-                    return result;
-                }
+
                 Map<String, Object> termrelationships = getStringObjectMap(postId, termTaxonomyId);
                 reportMapper.insertTermRelations(termrelationships);
                 log.debug("文章关联分类成功");
@@ -407,6 +414,46 @@ public class ReportController {
         result.put("rows", rows);
         return result;
     }
+
+    /**
+     * 查询文章各种数量
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryPostCount.do")
+    public Result queryPostCount() {
+        Result r = new Result();
+
+        //查询参数
+        Map<String,Object> param = new HashMap<String,Object>();
+
+        //查询总数量
+        int totalNum = reportMapper.queryPostCount(param);
+
+        //查询今天的数量
+        String today = DateUtil.df.format(new Date());
+        param.put("startTime",today);
+        param.put("endTime",today);
+        int todayNum = reportMapper.queryPostCount(param);
+
+        //查询周数量
+        param.put("startTime",DateUtil.getWeekMondayDate());
+        param.put("endTime",DateUtil.getWeekSundayDate());
+        int weekNum = reportMapper.queryPostCount(param);
+
+        //查询本周每个人的数量
+        List<Report> list = reportMapper.queryReport(param);
+        //取出最多的那个人的数量
+        Report theMost = list.get(0);
+
+        r.getResult().put("totalNum",totalNum);
+        r.getResult().put("todayNum",todayNum);
+        r.getResult().put("weekNum",weekNum);
+        r.getResult().put("weekMostUser",theMost);
+        return r;
+    }
+
 
     /**
      * 给文章关联固定分类

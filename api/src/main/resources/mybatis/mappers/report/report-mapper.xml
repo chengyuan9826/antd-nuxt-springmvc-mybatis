@@ -14,11 +14,26 @@
     <resultMap type="com.report.model.wp.Post" id="PostMap">
         <result column="id" property="id"/>
         <result column="post_author" property="post_author"/>
+        <result column="post_content" property="post_content"/>
         <result column="post_date" property="post_date"/>
         <result column="post_title" property="post_title"/>
         <result column="post_modified" property="post_modified"/>
         <result column="display_name" property="display_name"/>
+        <result column="thumb_url" property="thumb_url"/>
         <result column="tag" property="tag"/>
+    </resultMap>
+
+    <resultMap type="com.report.model.wp.Category" id="categoryMap">
+        <result column="term_id" property="termId"/>
+        <result column="name" property="name"/>
+        <result column="taxonomy" property="taxonomy"/>
+        <result column="slug" property="slug"/>
+        <result column="term_group" property="termGroup"/>
+        <result column="term_order" property="termOrder"/>
+        <result column="parent" property="parent"/>
+        <result column="count" property="count"/>
+        <collection column="term_id" property="children" javaType="java.util.ArrayList"
+                    ofType="com.report.model.wp.Category" select="queryCategoryChildById"/>
     </resultMap>
 
 
@@ -89,6 +104,7 @@
         t.username
         HAVING
         1 = 1
+        order by count(0) desc
     </select>
 
     <!--插入一篇文章-->
@@ -117,26 +133,31 @@
 
     <!--查询列表-->
     <select id="queryPostList" parameterType="java.util.Map" resultMap="PostMap">
-        SELECT a.id,a.post_author,a.post_date,a.post_title,a.post_modified,u.display_name, GROUP_CONCAT(d.`name`) tag
-        from wp_posts a,wp_term_relationships b,wp_term_taxonomy c, wp_terms d, wp_users u
+        SELECT a.id,a.post_author,a.post_date,a.post_content,a.post_title,a.post_modified,u.display_name,m2.meta_value
+        thumb_url, GROUP_CONCAT(d.`name`) tag
+        from wp_posts a,wp_term_relationships b,wp_term_taxonomy c, wp_terms d, wp_users u,wp_postmeta m1,wp_postmeta m2
         where a.id = b.object_id
         and a.post_author = u.id
         and b.term_taxonomy_id = c.term_taxonomy_id
         and c.term_id = d.term_id
         and a.post_status = 'publish'
+        and a.id = m1.post_id
+        and m1.meta_key='_thumbnail_id'
+        and m1.meta_value = m2.post_id
+        and m2.meta_key='_wp_attached_file'
+        <if test="tagName != null">
+            and d.`name` like concat('%',#{tagName},'%') -- 标签查询
+        </if>
         <if test="keyWord != null">
-            and
-            (d.`name` like concat('%',#{keyWord},'%') -- 标签查询
-            or a.post_title like concat('%',#{keyWord},'%') -- 标题查询
-            )
+            and a.post_title like concat('%',#{keyWord},'%') -- 标题查询
         </if>
         <if test="postAuthor != null">
             and a.post_author = #{postAuthor} -- 作者ID精确查询
         </if>
         <if test="termId != null">
-            and d.term_id = #{termId} -- 标签ID精确查询
+            and d.term_id = #{termId} -- 标签ID或者分类ID精确查询
         </if>
-        GROUP BY a.id
+        GROUP BY a.id ,m2.meta_value
         order by a.post_date desc
         limit #{limit}
         offset #{offset}
@@ -163,5 +184,56 @@
         <if test="termId!=null">
             and b.term_id=#{termId}
         </if>
+    </select>
+
+    <!--从options表中查询数据-->
+    <select id="queryOption" parameterType="java.lang.String" resultType="java.lang.String">
+        select option_value from wp_options a where a.option_name = #{0}
+    </select>
+
+    <sql id="categoryColums">
+        a.term_id,a.name,b.taxonomy,a.slug,a.term_group,a.term_order,b.parent,b.count
+    </sql>
+
+    <!--查询所有的分类列表，类型为category-->
+    <select id="queryCategoryList" resultMap="categoryMap">
+        SELECT
+        <include refid="categoryColums"/>
+        from wp_terms a , wp_term_taxonomy b
+        where a.term_id = b.term_id and b.taxonomy = 'category' and b.parent = 0
+        order by term_order
+    </select>
+
+    <select id="queryCategoryChildById" resultMap="categoryMap">
+        SELECT
+        <include refid="categoryColums"/>
+        from wp_terms a , wp_term_taxonomy b
+        where a.term_id = b.term_id and b.taxonomy = 'category' and b.parent = #{termId}
+        order by term_order
+    </select>
+
+    <!--查询一个id前面的ID-->
+    <select id="selectPrevPost" resultMap="PostMap">
+        select * from wp_posts a where a.id <![CDATA[<]]> #{0} and a.post_status ='publish' order by id desc limit 1
+    </select>
+    <!--查询一个id后面的ID-->
+    <select id="selectNextPost" resultMap="PostMap">
+        select * from wp_posts a where a.id <![CDATA[>]]> #{0} and a.post_status ='publish' order by id asc limit 1
+    </select>
+
+    <!--查询文章各种数量统计-->
+    <select id="queryPostCount" resultType="java.lang.Integer">
+        SELECT count(0) from wp_posts a WHERE a.post_status = 'publish' and 1=1
+        <if test="startTime != null">
+            and a.post_date >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and a.post_date &lt;= #{endTime}
+        </if>
+    </select>
+
+    <!--查询某个人有多少文章未发布-->
+    <select id="queryUserPostCount" resultType="java.util.Map">
+        SELECT b.user_login,count(0) count from wp_posts a,wp_users b where a.post_author = b.id  and b.user_login = #{0} and a.post_status = #{1} GROUP BY b.user_login
     </select>
 </mapper>

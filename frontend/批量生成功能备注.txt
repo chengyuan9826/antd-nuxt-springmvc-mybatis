@@ -4,13 +4,8 @@
 3.在wp_postmeta中插入图片元数据
 788	345	_wp_attached_file	2019/04/IMG_6810.jpg																			
 789	345	_wp_attachment_metadata	
+php序列化之后的数据：
 a:5:{s:5:"width";i:1024;s:6:"height";i:1024;s:4:"file";s:20:"2019/04/IMG_6810.jpg";s:5:"sizes";a:5:{s:9:"thumbnail";a:4:{s:4:"file";s:20:"IMG_6810-150x150.jpg";s:5:"width";i:150;s:6:"height";i:150;s:9:"mime-type";s:10:"image/jpeg";}s:6:"medium";a:4:{s:4:"file";s:20:"IMG_6810-300x300.jpg";s:5:"width";i:300;s:6:"height";i:300;s:9:"mime-type";s:10:"image/jpeg";}s:12:"medium_large";a:4:{s:4:"file";s:20:"IMG_6810-768x768.jpg";s:5:"width";i:768;s:6:"height";i:768;s:9:"mime-type";s:10:"image/jpeg";}s:33:"koji_preview_image_low_resolution";a:4:{s:4:"file";s:20:"IMG_6810-400x400.jpg";s:5:"width";i:400;s:6:"height";i:400;s:9:"mime-type";s:10:"image/jpeg";}s:34:"koji_preview_image_high_resolution";a:4:{s:4:"file";s:20:"IMG_6810-800x800.jpg";s:5:"width";i:800;s:6:"height";i:800;s:9:"mime-type";s:10:"image/jpeg";}}s:10:"image_meta";a:12:{s:8:"aperture";s:1:"0";s:6:"credit";s:0:"";s:6:"camera";s:0:"";s:7:"caption";s:0:"";s:17:"created_timestamp";s:1:"0";s:9:"copyright";s:0:"";s:12:"focal_length";s:1:"0";s:3:"iso";s:1:"0";s:13:"shutter_speed";s:1:"0";s:5:"title";s:0:"";s:11:"orientation";s:1:"1";s:8:"keywords";a:0:{}}}	
-
-
-a:5:{s:5:"width";i:580;s:6:"height";i:384;s:4:"file";s:52:"2019/02/f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e.jpg";s:5:"sizes";a:2:{s:9:"thumbnail";a:4:{s:4:"file";s:52:"f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e-150x150.jpg";s:5:"width";i:150;s:6:"height";i:150;s:9:"mime-type";s:10:"image/jpeg";}s:6:"medium";a:4:{s:4:"file";s:52:"f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e-300x199.jpg";s:5:"width";i:300;s:6:"height";i:199;s:9:"mime-type";s:10:"image/jpeg";}}s:10:"image_meta";a:12:{s:8:"aperture";s:1:"0";s:6:"credit";s:0:"";s:6:"camera";s:0:"";s:7:"caption";s:0:"";s:17:"created_timestamp";s:1:"0";s:9:"copyright";s:0:"";s:12:"focal_length";s:1:"0";s:3:"iso";s:1:"0";s:13:"shutter_speed";s:1:"0";s:5:"title";s:0:"";s:11:"orientation";s:1:"0";s:8:"keywords";a:0:{}}}
-
-
-a:5:{s:5:"width";i:580;s:6:"height";i:384;s:4:"file";s:52:"2019/02/f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e.jpg";s:5:"sizes";a:2:{s:9:"thumbnail";a:4:{s:4:"file";s:52:"f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e-150x150.jpg";s:5:"width";i:150;s:6:"height";i:150;s:9:"mime-type";s:10:"image/jpeg";}s:6:"medium";a:4:{s:4:"file";s:52:"f3fe53ee3d6d55fb2beff61d64224f4a20a4dd4e-300x199.jpg";s:5:"width";i:300;s:6:"height";i:199;s:9:"mime-type";s:10:"image/jpeg";}}s:10:"image_meta";a:12:{s:8:"aperture";s:1:"0";s:6:"credit";s:0:"";s:6:"camera";s:0:"";s:7:"caption";s:0:"";s:17:"created_timestamp";s:1:"0";s:9:"copyright";s:0:"";s:12:"focal_length";s:1:"0";s:3:"iso";s:1:"0";s:13:"shutter_speed";s:1:"0";s:5:"title";s:0:"";s:11:"orientation";s:1:"0";s:8:"keywords";a:0:{}}}
 4.获取psd链接
 5.根据文件夹名称获取用户id，拿到post_author
 6.插入文章元数据：
@@ -22,7 +17,6 @@ a:5:{s:5:"width";i:580;s:6:"height";i:384;s:4:"file";s:52:"2019/02/f3fe53ee3d6d5
 baseUrl: http://testwp.zxxk.com/wp/
 defaultTermId:27  (ccc分类)
 
-
 wp_terms中的id = wp_term_taxonomy中的term_id 进而拿到term_taxonomy_id
 wp_term_taxonomy中的term_taxonomy_id = wp_term_relationships中的 term_taxonomy_id 
 
@@ -33,3 +27,6 @@ wp_term_taxonomy中的term_taxonomy_id = wp_term_relationships中的 term_taxono
 因为wp_postmeta中的_wp_attachment_metadata字段不能靠拼接字符串生成，而要靠php serializ和unserializ函数序列化map对象得到
 2.为什么自动生成的文章在待审核的时候只有计划按钮，没有发布按钮？
 因为wp_posts表中post_date时间落后于post_date_gmt，修改post_date时间更大即可
+
+3.如何找到一个文章对应的封面图：
+在wp_postmeta中找到post_id对应的_thumbnail_id的值，然后再关联_wp_attached_file，即为封面图

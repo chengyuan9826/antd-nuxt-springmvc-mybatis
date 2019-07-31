@@ -2,8 +2,10 @@
     <div class="home" :class="[model]">
       <div class="slide">
            <div class="swiper-container">
-              <div class="swiper-wrapper">
-                <div v-for="item in slideData" :key="item.id" class="swiper-slide"><img :src="item.src"/></div>
+              <div ref="content" class="swiper-wrapper">
+                <div v-for="item in slideData" :key="item.id" class="swiper-slide">
+                  <img :src="item.src"/>
+                </div>
               </div>
               <div class="swiper-button-prev swiper-button-white"></div>
               <div class="swiper-button-next swiper-button-white"></div>
@@ -325,9 +327,18 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~assets/scss/mixin';
 @import '~/assets/font/iconfont.css';
+
+.canvas {
+    width: 90%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    opacity: 1;
+}
 .home {
   padding: 1px 0 0;
   .slide {

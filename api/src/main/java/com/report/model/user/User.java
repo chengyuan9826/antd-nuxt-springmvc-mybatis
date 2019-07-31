@@ -1,7 +1,5 @@
 package com.report.model.user;
 
-import java.util.List;
-
 public class User {
 	private int id;
 	private String userLogin;
