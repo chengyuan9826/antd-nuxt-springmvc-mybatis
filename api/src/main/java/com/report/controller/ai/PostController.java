@@ -39,7 +39,7 @@ public class PostController {
      */
     @ResponseBody
     @RequestMapping(value = "/list.do")
-    public Map<String, Object> list(HttpServletRequest request, @RequestBody(required = true) Map<String, Object> param, HttpSession session) {
+    public Map<String, Object> list(HttpServletRequest request, @RequestBody Map<String, Object> param, HttpSession session) {
         //取参数
         //返回结果
         Map<String, Object> result = new HashMap<String, Object>();
@@ -104,7 +104,7 @@ public class PostController {
         //取参数
         if (param.get("postId") == null) {
             result.put("state", -1);
-            result.put("msg", "文章ID不能为空");
+            result.put("msg", "postId不能为空");
             return result;
         }
         //返回结果
@@ -143,20 +143,20 @@ public class PostController {
         //返回结果
         String msg = "查询成功";
         int state = 0;
-        Integer prevPostId = null;
-        Integer nextPostId = null;
+        Post prevPost = null;
+        Post nextPost = null;
         //查询数据库
         try {
-            prevPostId = reportMapper.selectPrevId(postId);
-            nextPostId = reportMapper.selectNextId(postId);
+            prevPost = reportMapper.selectPrevPost(postId);
+            nextPost = reportMapper.selectNextPost(postId);
         } catch (Exception e) {
             state = -1;
             msg = e.getMessage();
         }
         result.put("state", state);
         result.put("msg", msg);
-        result.put("prevPostId", prevPostId);
-        result.put("nextPostId", nextPostId);
+        result.put("prevPost", prevPost);
+        result.put("nextPost", nextPost);
         return result;
     }
 
