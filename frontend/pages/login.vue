@@ -16,6 +16,8 @@
     <footer class="login-footer">
       北京凤凰学易科技有限公司
     </footer>
+    <!-- <div class="footer"></div> -->
+    <div class="circle"></div>
   </div>
 </template>
 
@@ -23,6 +25,7 @@
 import api from '~/assets/js/common/api'
 import constants from '~/assets/js/common/constants'
 import Earth from '~/components/earth/Earth'
+// import Earth from '~/components/three/Earth'
 export default {
   layout: 'login',
   components: {
@@ -155,6 +158,26 @@ export default {
     z-index: 10;
     width: 100%;
     bottom: 50px;
+  }
+  // .footer {
+  //   position: absolute;
+  //   background: url('../assets/img/company.png') no-repeat;
+  //   background-size: 100% 100%;
+  //   width: 20.57vw;
+  //   height: 3.8vw;
+  //   bottom: 14vh;
+  //   left: 50%;
+  //   transform: translate(-50%, 0%);
+  // }
+  .circle {
+    position: absolute;
+    background: url('../assets/img/circle.png') no-repeat;
+    background-size: 100% 100%;
+    width: 40vw;
+    height: 40vw;
+    bottom: 10.3vh;
+    left: 50%;
+    transform: translate(-50%, 0%);
   }
 }
 </style>

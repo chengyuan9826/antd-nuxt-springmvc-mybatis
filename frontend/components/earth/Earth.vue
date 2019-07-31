@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import earth from '~/assets/img/world.jpg'
-import stars from '~/assets/img/stars.jpg'
+import earth from '~/assets/img/world2.jpg'
+import stars from '~/assets/img/star.png'
 
 export default {
   name: 'Earth',
