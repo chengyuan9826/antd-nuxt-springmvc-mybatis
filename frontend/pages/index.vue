@@ -135,7 +135,7 @@ export default {
       menuData:[],// 列表数据
       parameter:{
         pageNum: 1,
-        pageSize:20,
+        pageSize:50,
         termId:null,// 类别的id
         keyWord:'',// 搜索关键字
         postAuthor:null,// 作者
@@ -317,12 +317,12 @@ export default {
             data.length<_.parameter.pageNum?_.hasMore=false:_.parameter.pageNum++
             _.menuData=_.menuData.concat(data)
           })
-          this.$nextTick(() => {
-          setTimeout(() => {
-              this.$redrawVueMasonry();
-            }, 300);
-          });
       })
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$redrawVueMasonry();
+        }, 300);
+      });
     }
   }
 }

@@ -2,6 +2,7 @@ const pkg = require('./package')
 const mainThemeColor = '#1890ff'
 module.exports = {
   mode: 'universal',
+  modern:'client',
 
   server: {
     port: 3000, // default: 3000
