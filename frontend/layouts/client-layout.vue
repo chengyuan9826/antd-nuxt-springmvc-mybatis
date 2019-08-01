@@ -3,8 +3,8 @@
     <header class="header">
       <a href="/" class="header-logo"></a>
       <div v-if="userInfo.userName" class="user-name">
-        <!-- <a :href="'/?postAuthor='+ userInfo.userId">{{userInfo.userName}}</a> -->
-        {{userInfo.userName}}
+        <a href="http://design.zxxk.com/wp-admin/">{{userInfo.userName}}</a>
+        <!-- {{userInfo.userName}} -->
         <span class="logout-btn" @click="loginOut">退出</span>
       </div>
       <div v-else class="header-login">
@@ -122,7 +122,7 @@ export default {
         userName: '', // 用户名
         userId: 0 // 用户id
       },
-      searchKey: ''
+      searchKey: 'keyWord'
     }
   },
   created() {
@@ -177,7 +177,8 @@ export default {
     scrollChangeLayout() {
       let _ = this
       window.addEventListener('scroll', function() {
-        let scrollTop = document.documentElement.scrollTop
+        let scrollTop = document.documentElement.scrollTop||document.body.scrollTop
+        console.log(scrollTop);
         if (!_.$route.query.id) {
           if (scrollTop >= 100) {
             _.fixedTop = true
