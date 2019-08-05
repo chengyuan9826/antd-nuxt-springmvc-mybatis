@@ -178,7 +178,6 @@ export default {
       let _ = this
       window.addEventListener('scroll', function() {
         let scrollTop = document.documentElement.scrollTop||document.body.scrollTop
-        console.log(scrollTop);
         if (!_.$route.query.id) {
           if (scrollTop >= 100) {
             _.fixedTop = true

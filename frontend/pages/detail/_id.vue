@@ -11,6 +11,7 @@
                 <span class="name">标签：</span>
                 <a v-for="(item,id) in tagList" :key="id" :href="'/?keyWord='+item" class="tag-item">{{item}}</a>
             </div>
+            <div v-if="isEditBtn" class="fixed-edit"><a class="edit-btn" :href="'http://design.zxxk.com/wp-admin/post.php?post='+id+'&action=edit'">编辑</a></div>
         </div>
         <div class="page-nav">
             <a class="prev" :href="'/detail?id='+prevPost.id"><i class="iconfont icon"></i>上一篇：{{prevPost.post_title}}</a>
@@ -38,7 +39,7 @@ export default {
             menuData:[],
             parameter:{// 请求关联列表
                 pageNum: 1,
-                pageSize:20,
+                pageSize:10,
                 termId:null,// 类别的id
                 keyWord:'',// 搜索关键字
                 postAuthor:null,// 作者
@@ -47,7 +48,8 @@ export default {
             },
             hasMore:true,
             nextPost:{},
-            prevPost:{}
+            prevPost:{},
+            isEditBtn:true
         }
     },
     head(){
@@ -73,6 +75,7 @@ export default {
         // 获取列表数据
         this.menuData=await util.getMenuData(this.parameter);
 
+        // 页面滚动加载数据
         this.getNewScrollData()
     },
     methods:{
@@ -98,6 +101,7 @@ export default {
        getNewScrollData(){
             let _=this
             this.parameter.pageNum++
+            this.parameter.pageSize=50
             util.windowScrollBottom(()=>{
                 if(!_.hasMore){
                     return
@@ -114,11 +118,12 @@ export default {
 <style lang="scss">
 @import '~assets/scss/mixin';
    .detail-content{
-       padding-top:150px;
+       position: relative;
+       padding-top:100px;
        width:1000px;
        margin: 0 auto;
         .title{
-            padding: 12px 0;
+            padding: 0 0 12px;
             font-size: 36px;
             font-weight: bold;
             text-align: left;
@@ -138,9 +143,32 @@ export default {
                }
            }
         }
+        .fixed-edit{
+            position: fixed;
+            width:1000px;
+            left:0;
+            right:0;
+            margin: 0 auto;
+            top:254px;
+            .edit-btn{
+                position: absolute;
+                right:-32px;
+                top:0;
+                padding:6px;
+                background:#64c169;
+                height: 60px;
+                width:32px;
+                font-size: 16px;
+                color:#fff;
+                border-radius: 0 4px 4px 0;
+                &:hover{
+                    background: #7cde81;
+                }
+            }
+        }
        .content{
             margin-top: 40px;
-            padding: 36px 36px 0;
+            padding: 24px 24px 0;
             font-size: 16px;
             line-height: 34px;
             background: #fff;
@@ -156,7 +184,7 @@ export default {
             img,.size-full,.alignnone{
                 display: block;
                 margin: 0 auto;
-                max-width:928px;
+                max-width:952px;
                 width:100%;
                 height: auto;
             }
@@ -189,6 +217,7 @@ export default {
                }
             }
         }
+    
     }
     .page-nav{
         width:1650px;
@@ -218,7 +247,11 @@ export default {
     }
     
 
-
+.waterfall-menu{
+    .material-menu{
+            background: #f1f2e9;
+    }
+}
 
 </style>
 
